@@ -9,28 +9,38 @@ export class AppService {
   private readonly users: any[] = [];
 
   constructor(
-    @Inject('PATIENT_RECORDS') private readonly patientRecordClient: ClientProxy,
+    @Inject('PATIENTRECORDS') private readonly patientRecordClient: ClientProxy,
     @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
-    @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
+    // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }
 
   getHello(): string {
-    return 'Hello World!';
+  console.log(' getHello:', );
+    return 'Hello dddd!';
   }
 
   createUser(createUserRequest: CreatePatientRequest) {
+    console.log('createUser :', createUserRequest);
     this.users.push(createUserRequest);
+    
     this.patientRecordClient.emit(
       'patient_created',
       new CreatePatientEvent(createUserRequest.name),
     );
-    this.appointmentClient.emit(
-      'patient_created',
-      new CreatePatientEvent(createUserRequest.name),
-    );
+    console.log('users :', this.users);
+    // this.appointmentClient.emit(
+    //   'patient_created',
+    //   new CreatePatientEvent(createUserRequest.name),
+    // );
   }
 
   getAnalytics() {
-    return this.notificationClient.send({ cmd: 'get_analytics' }, {});
+
+    console.log('getAnalytics :', );
+    this.patientRecordClient.emit(
+      'patient_created',
+      new CreatePatientEvent('sas'),
+    );
+    // return this.notificationClient.send({ cmd: 'get_analytics' }, {});
   }
 }

@@ -12,27 +12,31 @@ export class PatientService {
     @InjectRepository(Patient)
     private readonly patientRepository: Repository<Patient>,
     private readonly entityManager: EntityManager,
-  ) {}
+  ) { }
 
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+  async create(createPatientDto: CreatePatientDto) {
+
+    const item = new Patient({
+      ...createPatientDto
+    });
+    return await this.entityManager.save(item);
   }
 
   findAll() {
-
-    console.log('asdd :' );
     return this.patientRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} patient`;
+    return this.patientRepository.findOneBy({ id });
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: number, updatePatientDto: UpdatePatientDto) {
+    const Patient = await this.patientRepository.findOneBy({ id });
+    Object.assign(Patient, updatePatientDto);
+    await this.entityManager.save(Patient);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: number) {
+    await this.patientRepository.delete(id);
   }
 }

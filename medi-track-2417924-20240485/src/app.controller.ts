@@ -11,9 +11,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post()
+  @Post('patient')
   createUser(@Body() createUserRequest: CreatePatientRequest) {
-    this.appService.createUser(createUserRequest);
+  console.log('createUserRequest :', createUserRequest);
+     this.appService.createUser(createUserRequest);
   }
 
   @Get('analytics')

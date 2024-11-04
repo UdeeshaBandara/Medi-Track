@@ -5,5 +5,5 @@ export declare class AppController {
     constructor(appService: AppService);
     getHello(): string;
     createUser(createUserRequest: CreatePatientRequest): void;
-    getAnalytics(): import("rxjs").Observable<any>;
+    getAnalytics(): void;
 }

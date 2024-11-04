@@ -19,18 +19,16 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             microservices_1.ClientsModule.register([
                 {
-                    name: 'PATIENT_RECORDS',
+                    name: 'PATIENTRECORDS',
                     transport: microservices_1.Transport.TCP,
+                    options: {
+                        port: 4000
+                    }
                 },
                 {
                     name: 'APPOINTMENTS',
                     transport: microservices_1.Transport.TCP,
-                },
-                {
-                    name: 'NOTIFICATIONS',
-                    transport: microservices_1.Transport.TCP,
-                    options: { port: 3001 },
-                },
+                }
             ]),
         ],
         controllers: [app_controller_1.AppController],

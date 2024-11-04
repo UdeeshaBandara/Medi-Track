@@ -11,8 +11,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-  @EventPattern('patient_created')
+
   handleUserCreated(data: CreatePatientEvent) {
-    this.appService.handleUserCreated(data);
+
+    console.log('wwowwoowo :');
+     this.appService.handleUserCreated(data);
   }
 }

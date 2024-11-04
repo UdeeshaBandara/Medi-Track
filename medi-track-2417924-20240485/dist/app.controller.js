@@ -24,6 +24,7 @@ let AppController = class AppController {
         return this.appService.getHello();
     }
     createUser(createUserRequest) {
+        console.log('createUserRequest :', createUserRequest);
         this.appService.createUser(createUserRequest);
     }
     getAnalytics() {
@@ -38,7 +39,7 @@ __decorate([
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('patient'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_patient_request_dto_1.CreatePatientRequest]),

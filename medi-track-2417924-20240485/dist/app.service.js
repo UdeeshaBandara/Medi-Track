@@ -17,32 +17,32 @@ const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
 const create_patient_event_1 = require("./create-patient.event");
 let AppService = class AppService {
-    constructor(patientRecordClient, appointmentClient, notificationClient) {
+    constructor(patientRecordClient, appointmentClient) {
         this.patientRecordClient = patientRecordClient;
         this.appointmentClient = appointmentClient;
-        this.notificationClient = notificationClient;
         this.users = [];
     }
     getHello() {
-        return 'Hello World!';
+        console.log(' getHello:');
+        return 'Hello dddd!';
     }
     createUser(createUserRequest) {
+        console.log('createUser :', createUserRequest);
         this.users.push(createUserRequest);
         this.patientRecordClient.emit('patient_created', new create_patient_event_1.CreatePatientEvent(createUserRequest.name));
-        this.appointmentClient.emit('patient_created', new create_patient_event_1.CreatePatientEvent(createUserRequest.name));
+        console.log('users :', this.users);
     }
     getAnalytics() {
-        return this.notificationClient.send({ cmd: 'get_analytics' }, {});
+        console.log('getAnalytics :');
+        this.patientRecordClient.emit('patient_created', new create_patient_event_1.CreatePatientEvent('sas'));
     }
 };
 exports.AppService = AppService;
 exports.AppService = AppService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('PATIENT_RECORDS')),
+    __param(0, (0, common_1.Inject)('PATIENTRECORDS')),
     __param(1, (0, common_1.Inject)('APPOINTMENTS')),
-    __param(2, (0, common_1.Inject)('NOTIFICATIONS')),
     __metadata("design:paramtypes", [microservices_1.ClientProxy,
-        microservices_1.ClientProxy,
         microservices_1.ClientProxy])
 ], AppService);
 //# sourceMappingURL=app.service.js.map
