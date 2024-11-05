@@ -6,7 +6,7 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 405894865394.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - docker build -t notification .
+      - docker build -t notification-service -f ./notification-service/Dockerfile ./
       - docker tag notification:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/notification:latest
   post_build: 
     commands:
