@@ -5,5 +5,5 @@ export declare class AppController {
     constructor(appService: AppService);
     getHello(): string;
     createUser(createUserRequest: CreatePatientRequest): void;
-    getAnalytics(): void;
+    uploadFile(file: Express.Multer.File): Promise<void>;
 }

@@ -1,0 +1,14 @@
+# patient-record-service.yaml
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: patient-record
+spec:
+  selector:
+    app: patient-record
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 3000
+  type: ClusterIP

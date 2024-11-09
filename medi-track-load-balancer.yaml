@@ -1,0 +1,16 @@
+# patient-service-loadbalancer.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: medi-track
+  labels:
+    app: medi-track
+spec:
+  type: LoadBalancer
+  selector:
+    app: medi-track
+    version: blue  
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

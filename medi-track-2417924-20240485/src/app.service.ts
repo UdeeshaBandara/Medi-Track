@@ -17,8 +17,7 @@ export class AppService {
   ) { }
 
   getHello(): string {
-  console.log(' getHello:', );
-    return 'Hello dddd!';
+    return 'Hello Triggered!';
   }
 
   createUser(createUserRequest: CreatePatientRequest) {

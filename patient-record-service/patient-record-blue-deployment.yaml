@@ -1,30 +1,26 @@
-apiVersion: eksctl.io/v1alpha5
-kind: ClusterConfig
+apiVersion: apps/v1
+kind: Deployment
 
 metadata:
-  name: patient-record-service-green
-  region: us-east-1
+  name: patient-record-service-blue
   labels:
     app: patient-record-service
-    version: green
+    version: blue
 spec:
   replicas: 2
   selector:
     matchLabels:
       app: patient-record-service
-      version: green
+      version: blue
   template:
     metadata:
       labels:
         app: patient-record-service
-        version: green
+        version: blue
     spec:
       containers:
         - name: patient-record-service
           image: 405894865394.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
           ports:
             - containerPort: 4000
-nodeGroups:
-  - name: ng-1
-    instanceType: t2.micro
-    desiredCapacity: 3
+
