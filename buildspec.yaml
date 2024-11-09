@@ -11,7 +11,11 @@ phases:
 
       - docker build -t medi-track-gateway -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       - docker tag medi-track-gateway:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
+    
+      - docker build -t medi-track-gateway -f ./patient-record-service/Dockerfile ./patient-record-service
+      - docker tag patient-record-service:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
   post_build: 
     commands:
       - docker push 405894865394.dkr.ecr.us-east-1.amazonaws.com/notification:latest
       - docker push 405894865394.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
+      - docker push 405894865394.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest

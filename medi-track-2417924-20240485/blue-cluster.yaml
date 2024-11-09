@@ -16,12 +16,12 @@ spec:
   template:
     metadata:
       labels:
-        app: patient-service
+        app: medi-track
         version: blue
     spec:
       containers:
-        - name: patient-service
-          image: <your-blue-version-image>
+        - name: medi-track
+          image: 405894865394.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
           ports:
             - containerPort: 3000
 nodeGroups:
