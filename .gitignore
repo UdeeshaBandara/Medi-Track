@@ -1,4 +1,11 @@
 medi-track-2417924-20240485/node_modules
+medi-track-2417924-20240485/dist
 appointment-scheduling-service/node_modules
+appointment-scheduling-service/dist
 notification-service/node_modules
+notification-service/dist
 patient-record-service/node_modules
+patient-record-service/dist
+file-handler/node_modules
+file-handler/dist
+*.env

@@ -7,7 +7,6 @@ import { PatientModule } from './patient/patient.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { LabResultModule } from './lab-result/lab-result.module';
 import { PrescriptionModule } from './prescription/prescription.module';
-import { MedicalHistoryModule } from './medical-history/medical-history.module';
 
 @Module({
   imports: [

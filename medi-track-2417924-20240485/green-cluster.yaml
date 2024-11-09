@@ -1,0 +1,30 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: medi-track-green
+  region: us-east-1
+  labels:
+    app: medi-track
+    version: green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: medi-track
+      version: green
+  template:
+    metadata:
+      labels:
+        app: medi-track
+        version: green
+    spec:
+      containers:
+        - name: medi-track
+          image: <your-green-version-image>
+          ports:
+            - containerPort: 3000
+nodeGroups:
+  - name: ng-1
+    instanceType: t2.micro
+    desiredCapacity: 3

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePatientRequest } from './create-patient-request.dto';
 import { CreatePatientEvent } from './create-patient.event';
+import { FileUploadEvent } from './file-upload.event';
 
 @Injectable()
 export class AppService {
@@ -11,6 +12,7 @@ export class AppService {
   constructor(
     @Inject('PATIENTRECORDS') private readonly patientRecordClient: ClientProxy,
     @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
+    @Inject('UPLOADER') private readonly uploadClient: ClientProxy,
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }
 
@@ -32,6 +34,15 @@ export class AppService {
     //   'patient_created',
     //   new CreatePatientEvent(createUserRequest.name),
     // );
+  }
+  
+  uploadFiles(fileName: string, file: Buffer) {
+  console.log('file :', file);
+ 
+    this.uploadClient.emit(
+      'file_upload',
+      new FileUploadEvent(fileName,file),
+    );
   }
 
   getAnalytics() {

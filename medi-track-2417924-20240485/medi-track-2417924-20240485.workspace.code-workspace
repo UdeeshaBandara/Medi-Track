@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "../patient-record-service"
+		},
+		{
+			"path": "../file-handler"
 		}
 	],
 	"settings": {}

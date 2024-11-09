@@ -14,6 +14,13 @@ import { AppService } from './app.service';
         }
       },
       {
+        name: 'UPLOADER',
+        transport: Transport.TCP,
+        options:{
+          port:4001
+        }
+      },
+      {
         name: 'APPOINTMENTS',
         transport: Transport.TCP,
       }
