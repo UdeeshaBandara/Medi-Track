@@ -1,5 +1,5 @@
 import { AbstractEntity } from "src/database/abstract.entity";
-import { Patient } from "src/patient/entities/patient.entity";
+// import { Patient } from "src/patient/entities/patient.entity";
 import {
     Column,
     Entity,
@@ -28,8 +28,8 @@ export class Doctor extends AbstractEntity<Doctor>  {
     @Column()
     phone_number: number;
  
-    @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
-    patient: Patient;
+    // @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
+    // patient: Patient;
 
 }
 

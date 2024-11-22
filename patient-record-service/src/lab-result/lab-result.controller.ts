@@ -2,33 +2,35 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { LabResultService } from './lab-result.service';
 import { CreateLabResultDto } from './dto/create-lab-result.dto';
 import { UpdateLabResultDto } from './dto/update-lab-result.dto';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller('lab-result')
 export class LabResultController {
   constructor(private readonly labResultService: LabResultService) {}
 
-  @Post()
-  create(@Body() createLabResultDto: CreateLabResultDto) {
-    return this.labResultService.create(createLabResultDto);
+  @EventPattern('lab_result_created')
+  create(@Body() createPatientDto: any) {
+    return this.labResultService.create(createPatientDto);
   }
 
-  @Get()
+  @EventPattern('lab_result_find_all')
   findAll() {
     return this.labResultService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @EventPattern('lab_result_find_one')
+  async findOne(@Body() id: string) {
     return this.labResultService.findOne(+id);
+    
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLabResultDto: UpdateLabResultDto) {
-    return this.labResultService.update(+id, updateLabResultDto);
+  @EventPattern('lab_result_update')
+  update(  @Body() updatePatientDto: any) {
+    return this.labResultService.update(+updatePatientDto.id, updatePatientDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @EventPattern('lab_result_delete')
+  remove(id: string) {
     return this.labResultService.remove(+id);
   }
 }

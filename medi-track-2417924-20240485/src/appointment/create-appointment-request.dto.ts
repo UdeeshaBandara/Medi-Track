@@ -1,4 +1,4 @@
-export class CreatePatientRequest {
+export class CreateAppointmentRequest {
     name: string;
     address: string;
     email: string;

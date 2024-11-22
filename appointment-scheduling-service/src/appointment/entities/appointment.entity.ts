@@ -1,5 +1,4 @@
 import { AbstractEntity } from "src/database/abstract.entity";
-import { Patient } from "src/patient/entities/patient.entity";
 import {
     Column,
     Entity,
@@ -28,7 +27,7 @@ export class Appointment extends AbstractEntity<Appointment>  {
     @Column()
     status: number;
  
-    @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
-    patient: Patient;
+    // @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
+    // patient: Patient;
 
 }

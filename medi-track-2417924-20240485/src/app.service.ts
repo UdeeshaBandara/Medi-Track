@@ -24,7 +24,7 @@ export class AppService {
 
     return await this.patientRecordClient.send(
       'patient_created',
-      new CreatePatientEvent(createUserRequest.name),
+      createUserRequest
     );
 
   }

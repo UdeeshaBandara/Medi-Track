@@ -7,6 +7,9 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
+      options:{
+        port: 4002
+      }
     },
   );
   app.listen();

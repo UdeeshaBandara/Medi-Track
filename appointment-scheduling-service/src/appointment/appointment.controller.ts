@@ -1,34 +1,35 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import { EventPattern } from '@nestjs/microservices';
 
-@Controller('appointment')
+@Controller()
 export class AppointmentController {
-  constructor(private readonly appointmentService: AppointmentService) {}
+  constructor(private readonly appointmentService: AppointmentService) { }
 
-  @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto) {
-    return this.appointmentService.create(createAppointmentDto);
+  @EventPattern('appointment_created')
+  create(@Body() createPatientDto: CreateAppointmentDto) {
+    return this.appointmentService.create(createPatientDto);
   }
 
-  @Get()
+  @EventPattern('appointment_find_all')
   findAll() {
     return this.appointmentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @EventPattern('appointment_find_one')
+  async findOne(@Body() id: string) {
     return this.appointmentService.findOne(+id);
+
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAppointmentDto: UpdateAppointmentDto) {
-    return this.appointmentService.update(+id, updateAppointmentDto);
+  @EventPattern('appointment_update')
+  update(@Body() updatePatientDto: any) {
+    return this.appointmentService.update(+updatePatientDto.id, updatePatientDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @EventPattern('appointment_delete')
+  remove(id: string) {
     return this.appointmentService.remove(+id);
   }
 }
