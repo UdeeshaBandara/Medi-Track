@@ -1,11 +1,13 @@
 import {
   Controller, Get, ParseFilePipe, Post, Body, UploadedFile,
   UseInterceptors,
+  Param,
+  Delete,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreatePatientRequest } from './create-patient-request.dto';
-
 import { FileInterceptor } from '@nestjs/platform-express';
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
@@ -16,9 +18,30 @@ export class AppController {
   }
 
   @Post('patient')
-  createUser(@Body() createUserRequest: CreatePatientRequest) {
-    console.log('createUserRequest :', createUserRequest);
-    this.appService.createUser(createUserRequest);
+  createPatient(@Body() createUserRequest: CreatePatientRequest) {
+    return this.appService.createUser(createUserRequest);
+  }
+
+  @Get('patient')
+  getPatients() {
+     
+    return this.appService.findAllPatients();
+  }
+
+  @Get('patient/:id')
+  getOnePatients(@Param('id') id) {
+
+    return this.appService.findOnePatient(id);
+  }
+
+  @Get('patient/:id')
+  updatePatients(@Param('id') id: string, @Body() patientDetails: any) {
+   return this.appService.updatePatient(id, patientDetails);
+  }
+
+  @Delete('patient/:id')
+  deletePatients(@Param('id') id) {
+   return this.appService.deletePatient(id);
   }
 
   @Post('files')

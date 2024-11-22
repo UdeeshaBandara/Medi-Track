@@ -14,12 +14,12 @@ export class PatientService {
     private readonly entityManager: EntityManager,
   ) { }
 
-  async create(createPatientDto: CreatePatientDto) {
+  create(createPatientDto: CreatePatientDto) {
 
     const item = new Patient({
       ...createPatientDto
     });
-    return await this.entityManager.save(item);
+    return this.entityManager.save(item);
   }
 
   findAll() {
@@ -28,15 +28,16 @@ export class PatientService {
 
   findOne(id: number) {
     return this.patientRepository.findOneBy({ id });
+
   }
 
   async update(id: number, updatePatientDto: UpdatePatientDto) {
     const Patient = await this.patientRepository.findOneBy({ id });
     Object.assign(Patient, updatePatientDto);
-    await this.entityManager.save(Patient);
+    return this.entityManager.save(Patient);
   }
 
-  async remove(id: number) {
-    await this.patientRepository.delete(id);
+   remove(id: number) {
+    return this.patientRepository.delete(id);
   }
 }

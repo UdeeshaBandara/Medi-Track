@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Body } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { EventPattern } from '@nestjs/microservices';
 
-@Controller('patient')
+@Controller()
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 
@@ -13,23 +13,24 @@ export class PatientController {
     return this.patientService.create(createPatientDto);
   }
 
-  @Get()
+  @EventPattern('patient_find_all')
   findAll() {
     return this.patientService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @EventPattern('patient_find_one')
+  async findOne(@Body() id: string) {
     return this.patientService.findOne(+id);
+    
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
-    return this.patientService.update(+id, updatePatientDto);
+  @EventPattern('patient_update')
+  update(  @Body() updatePatientDto: any) {
+    return this.patientService.update(+updatePatientDto.id, updatePatientDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @EventPattern('patient_delete')
+  remove(id: string) {
     return this.patientService.remove(+id);
   }
 }

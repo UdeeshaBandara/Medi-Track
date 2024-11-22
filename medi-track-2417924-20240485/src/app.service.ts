@@ -20,37 +20,49 @@ export class AppService {
     return 'Hello Triggered!';
   }
 
-  createUser(createUserRequest: CreatePatientRequest) {
-    console.log('createUser :', createUserRequest);
-    this.users.push(createUserRequest);
-    
-    this.patientRecordClient.emit(
+  async createUser(createUserRequest: CreatePatientRequest) {
+
+    return await this.patientRecordClient.send(
       'patient_created',
       new CreatePatientEvent(createUserRequest.name),
     );
-    console.log('users :', this.users);
-    // this.appointmentClient.emit(
-    //   'patient_created',
-    //   new CreatePatientEvent(createUserRequest.name),
-    // );
+
   }
-  
+
+  async findAllPatients() {
+    return await this.patientRecordClient.send(
+      'patient_find_all', {}
+    );
+  }
+
+  async findOnePatient(id: number) {
+
+    return await this.patientRecordClient.send(
+      'patient_find_one',
+      id
+    );
+  }
+
+  async updatePatient(id: string, patientDetails: any) {
+    return await this.patientRecordClient.send(
+      'patient_update',
+      { id, ...patientDetails }
+    );
+  }
+
+  async deletePatient(id: number) {
+    return await this.patientRecordClient.send(
+      'patient_delete',
+      id,
+    );
+  }
+
   uploadFiles(fileName: string, file: Buffer) {
-  console.log('file :', file);
- 
-    this.uploadClient.emit(
+
+    this.uploadClient.send(
       'file_upload',
-      new FileUploadEvent(fileName,file),
+      new FileUploadEvent(fileName, file),
     );
   }
 
-  getAnalytics() {
-
-    console.log('getAnalytics :', );
-    this.patientRecordClient.emit(
-      'patient_created',
-      new CreatePatientEvent('sas'),
-    );
-    // return this.notificationClient.send({ cmd: 'get_analytics' }, {});
-  }
 }

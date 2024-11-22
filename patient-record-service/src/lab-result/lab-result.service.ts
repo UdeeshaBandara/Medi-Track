@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLabResultDto } from './dto/create-lab-result.dto';
 import { UpdateLabResultDto } from './dto/update-lab-result.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { LabResult } from './entities/lab-result.entity';
 
 @Injectable()
 export class LabResultService {
-  create(createLabResultDto: CreateLabResultDto) {
-    return 'This action adds a new labResult';
+  
+  constructor(
+    @InjectRepository(LabResult)
+    private readonly labResultyRepository: Repository<LabResult>,
+    private readonly entityManager: EntityManager,
+  ) { }
+
+
+  async create(createLabResultDto: CreateLabResultDto) {
+    const item = new LabResult({
+      ...createLabResultDto
+    });
+    return await this.entityManager.save(item);
   }
 
   findAll() {
-    return `This action returns all labResult`;
+    return this.labResultyRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} labResult`;
+    return this.labResultyRepository.findOneBy({ id });
   }
 
-  update(id: number, updateLabResultDto: UpdateLabResultDto) {
-    return `This action updates a #${id} labResult`;
+  async update(id: number, updateLabResultDto: UpdateLabResultDto) {
+    const MedicalHistory = await this.labResultyRepository.findOneBy({ id });
+    Object.assign(MedicalHistory, updateLabResultDto);
+    await this.entityManager.save(MedicalHistory);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} labResult`;
+  async remove(id: number) {
+    await this.labResultyRepository.delete(id);
   }
 }
