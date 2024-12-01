@@ -1,23 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePatientRequest } from './create-patient-request.dto';
-import { CreatePatientEvent } from './create-patient.event';
 import { FileUploadEvent } from './file-upload.event';
-
+import { Logger } from '@nestjs/common';
 @Injectable()
 export class AppService {
 
   private readonly users: any[] = [];
 
   constructor(
-    @Inject('PATIENTRECORDS') private readonly patientRecordClient: ClientProxy,
+    @Inject('patient-record-blue') private readonly patientRecordClient: ClientProxy,
     @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
     @Inject('UPLOADER') private readonly uploadClient: ClientProxy,
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }
 
   getHello(): string {
-    return 'Hello Triggered!';
+    Logger.log('getHello', 'AppService');
+    return 'Hello Triggered 2!';
   }
 
   async createUser(createUserRequest: CreatePatientRequest) {
@@ -30,6 +30,7 @@ export class AppService {
   }
 
   async findAllPatients() {
+    Logger.log('findAllPatients', 'Patient');
     return await this.patientRecordClient.send(
       'patient_find_all', {}
     );

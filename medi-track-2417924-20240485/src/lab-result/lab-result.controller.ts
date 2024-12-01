@@ -2,10 +2,13 @@ import {
   Controller, Get, Post, Body,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { LabResultService } from './lab-result.service';
 import { CreateLabResultRequest } from './create-lab-result-request.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('lab-result')
 export class LabResultController {
   constructor(private readonly labResultService: LabResultService) { }

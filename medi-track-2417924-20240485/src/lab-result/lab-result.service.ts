@@ -9,7 +9,7 @@ export class LabResultService {
 
   constructor(
 
-    @Inject('PATIENTRECORDS') private readonly patientRecordClient: ClientProxy,
+    @Inject('patient-record-blue') private readonly patientRecordClient: ClientProxy,
   
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }

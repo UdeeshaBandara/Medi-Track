@@ -4,7 +4,7 @@ import { UpdatePatientDto } from './dto/update-patient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Patient } from './entities/patient.entity';
 import { EntityManager, Repository } from 'typeorm';
-
+import { Logger } from '@nestjs/common';
 @Injectable()
 export class PatientService {
 
@@ -23,6 +23,7 @@ export class PatientService {
   }
 
   findAll() {
+    Logger.log('PatientService', 'findAll ');
     return this.patientRepository.find();
   }
 

@@ -3,17 +3,22 @@ import {
   UseInterceptors,
   Param,
   Delete,
+  UseGuards
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreatePatientRequest } from './create-patient-request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Logger } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello(): string {
+    Logger.log('getHello', 'AppController');
     return this.appService.getHello();
   }
 
@@ -24,7 +29,7 @@ export class AppController {
 
   @Get('patient')
   getPatients() {
-     
+    Logger.log('getPatients', 'Patient');
     return this.appService.findAllPatients();
   }
 

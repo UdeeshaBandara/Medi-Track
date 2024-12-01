@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Patient = void 0;
 const abstract_entity_1 = require("../../database/abstract.entity");
+const lab_result_entity_1 = require("../../lab-result/entities/lab-result.entity");
+const medical_history_entity_1 = require("../../medical-history/entities/medical-history.entity");
+const prescription_entity_1 = require("../../prescription/entities/prescription.entity");
 const typeorm_1 = require("typeorm");
 let Patient = class Patient extends abstract_entity_1.AbstractEntity {
 };
@@ -25,12 +28,36 @@ __decorate([
 ], Patient.prototype, "address", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Patient.prototype, "age", void 0);
+    __metadata("design:type", String)
+], Patient.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Patient.prototype, "gender", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], Patient.prototype, "date_of_birth", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Patient.prototype, "contactNumber", void 0);
+], Patient.prototype, "contact_number", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Patient.prototype, "emergency_contact", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => medical_history_entity_1.MedicalHistory, (patient) => patient.patient),
+    __metadata("design:type", Array)
+], Patient.prototype, "medicalHistory", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => prescription_entity_1.Prescription, (patient) => patient.patient),
+    __metadata("design:type", Array)
+], Patient.prototype, "prescription", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => lab_result_entity_1.LabResult, (patient) => patient.patient),
+    __metadata("design:type", Array)
+], Patient.prototype, "labResult", void 0);
 exports.Patient = Patient = __decorate([
     (0, typeorm_1.Entity)()
 ], Patient);
