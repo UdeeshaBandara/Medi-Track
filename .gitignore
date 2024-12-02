@@ -8,4 +8,6 @@ patient-record-service/node_modules
 patient-record-service/dist
 file-handler/node_modules
 file-handler/dist
+cron-jobs/node_modules
+cron-jobs/dist
 *.env

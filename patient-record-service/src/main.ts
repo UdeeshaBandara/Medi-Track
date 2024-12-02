@@ -12,10 +12,11 @@ async function bootstrap() {
         host: '0.0.0.0',
         port: 4000
       },
-      logger: ['log', 'error', 'warn', 'debug', 'verbose'], 
+    logger: ['log', 'error', 'warn', 'debug', 'verbose'], 
     },
   );
    app.listen();
    Logger.log('Patient record is  host: 0.0.0.0 on: 4000', 'Bootstrap');
 }
 bootstrap();
+

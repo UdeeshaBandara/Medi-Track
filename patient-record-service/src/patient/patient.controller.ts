@@ -1,12 +1,14 @@
-import { Controller, Body } from '@nestjs/common';
+import { Controller, Body, Inject } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { ClientProxy, MessagePattern } from '@nestjs/microservices';
 import { Logger } from '@nestjs/common';
 
 @Controller()
 export class PatientController {
-  constructor(private readonly patientService: PatientService) {}
+  constructor(
+    private readonly patientService: PatientService
+    ) {}
 
   @MessagePattern('patient_created')
   create(@Body() createPatientDto: CreatePatientDto) {
@@ -14,9 +16,10 @@ export class PatientController {
   }
 
   @MessagePattern('patient_find_all')
-  findAll() {
-    Logger.log('PatientController', 'patient_find_all ');
-    return this.patientService.findAll();
+  async findAll() {
+    Logger.log('PatientController', 'appointment_find_all ');
+   
+    return await this.patientService.findAll();
   }
 
   @MessagePattern('patient_find_one')

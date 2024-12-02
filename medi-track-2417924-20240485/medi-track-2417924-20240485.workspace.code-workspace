@@ -20,6 +20,9 @@
 		},
 		{
 			"path": "../k8s"
+		},
+		{
+			"path": "../cron-jobs"
 		}
 	],
 	"settings": {}

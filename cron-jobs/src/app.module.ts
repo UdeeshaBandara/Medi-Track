@@ -1,23 +1,27 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { PatientModule } from './patient/patient.module';
-import { MedicalHistoryModule } from './medical-history/medical-history.module';
-import { LabResultModule } from './lab-result/lab-result.module';
-import { PrescriptionModule } from './prescription/prescription.module';
+import { DatabaseModule } from './database/database.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PatientSummary } from './entities/patient.summary.entity';
+import { PatientAggregationService } from './patient-data-aggregator.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forFeature([PatientSummary]),
     DatabaseModule,
-    PatientModule,
-    MedicalHistoryModule,
-    PrescriptionModule,
-    LabResultModule,
     ClientsModule.register([
+      {
+        name: 'PATIENTRECORD',
+        transport: Transport.TCP,
+        options: {
+          host: 'patient-record-blue',
+          port: 4000
+        }
+      },
       {
         name: 'UPLOADER',
         transport: Transport.TCP,
@@ -45,6 +49,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ])
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PatientAggregationService],
 })
-export class AppModule {}
+export class AppModule { }

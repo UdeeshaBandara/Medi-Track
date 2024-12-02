@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Patient } from './entities/patient.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 @Injectable()
 export class PatientService {
 
@@ -12,6 +13,7 @@ export class PatientService {
     @InjectRepository(Patient)
     private readonly patientRepository: Repository<Patient>,
     private readonly entityManager: EntityManager,
+    @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
   ) { }
 
   create(createPatientDto: CreatePatientDto) {
@@ -22,8 +24,11 @@ export class PatientService {
     return this.entityManager.save(item);
   }
 
-  findAll() {
+  async findAll() {
     Logger.log('PatientService', 'findAll ');
+    return await this.appointmentClient.send(
+      'appointment_find_all', {}
+    );  
     return this.patientRepository.find();
   }
 

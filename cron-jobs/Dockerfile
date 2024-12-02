@@ -5,16 +5,13 @@ FROM node:23.1 as production
 WORKDIR /src
 
 # Copy package files and install dependencies
-COPY package*.json ./
+COPY package*.json .
 RUN npm install
 
 # Copy the rest of the application
 COPY . .
 
-RUN npm run build
-
-# Expose the application port
-EXPOSE 3000
+RUN npm run build 
 
 # Start the Nest.js application
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/patient-data.job.js"]
