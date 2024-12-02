@@ -22,10 +22,10 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     ClientsModule.register([
       {
-        name: 'patient-record-blue',
+        name: 'PATIENTRECORD',
         transport: Transport.TCP,
         options: {
-          // host: 'patient-record-blue',
+          host: 'patient-record-blue',
           port: 4000
         }
       },
@@ -33,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
         name: 'UPLOADER',
         transport: Transport.TCP,
         options: {
+          host: 'file-handler-blue',
           port: 4001
         }
       },
@@ -40,6 +41,7 @@ import { AuthModule } from './auth/auth.module';
         name: 'APPOINTMENTS',
         transport: Transport.TCP,
         options: {
+          host: 'appointment-scheduling-blue',
           port: 4002
         }
       },
@@ -47,6 +49,7 @@ import { AuthModule } from './auth/auth.module';
         name: 'NOTIFICATIONS',
         transport: Transport.TCP,
         options: {
+          host: 'notification-service-blue',
           port: 4003
         }
       }

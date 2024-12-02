@@ -1,0 +1,15 @@
+# file-handler-service.yaml
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: file-handler-blue
+spec:
+  selector:
+    app: file-handler
+    version: blue
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 4001
+  type: ClusterIP

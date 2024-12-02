@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: file-handler-green
+  labels:
+    app: file-handler
+    version: green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file-handler
+      version: green
+  template:
+    metadata:
+      labels:
+        app: file-handler
+        version: green
+    spec:
+      containers:
+        - name: file-handler
+          image: file-handler:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-host
+                  key: MYSQL_HOST
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-db
+                  key: MYSQL_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-username
+                  key: MYSQL_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: MYSQL_PASSWORD
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-port
+                  key: MYSQL_PORT
+          ports:
+            - containerPort: 4001
+

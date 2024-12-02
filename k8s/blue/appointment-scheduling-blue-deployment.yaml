@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: appointment-scheduling-blue
+  labels:
+    app: appointment-scheduling
+    version: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-scheduling
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: appointment-scheduling
+        version: blue
+    spec:
+      containers:
+        - name: appointment-scheduling
+          image: appointment-scheduling:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-host
+                  key: MYSQL_HOST
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-db
+                  key: MYSQL_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-username
+                  key: MYSQL_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: MYSQL_PASSWORD
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-port
+                  key: MYSQL_PORT
+          ports:
+            - containerPort: 4002
+

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: medi-track-gateway-blue
+  labels:
+    app: medi-track-gateway
+    version: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: medi-track-gateway
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: medi-track-gateway
+        version: blue
+    spec:
+      containers:
+        - name: medi-track-gateway
+          image: medi-track-gateway:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-host
+                  key: MYSQL_HOST
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-db
+                  key: MYSQL_DATABASE
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-username
+                  key: MYSQL_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: MYSQL_PASSWORD
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-port
+                  key: MYSQL_PORT
+          ports:
+            - containerPort: 3000
+

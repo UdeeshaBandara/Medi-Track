@@ -9,7 +9,7 @@ export class AppService {
   private readonly users: any[] = [];
 
   constructor(
-    @Inject('patient-record-blue') private readonly patientRecordClient: ClientProxy,
+    @Inject('PATIENTRECORD') private readonly patientRecordClient: ClientProxy,
     @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
     @Inject('UPLOADER') private readonly uploadClient: ClientProxy,
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,

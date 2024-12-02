@@ -1,0 +1,15 @@
+# notification-service.yaml
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: notification-service-blue
+spec:
+  selector:
+    app: notification-service
+    version: blue
+  ports:
+    - protocol: TCP
+      port: 4003
+      targetPort: 4003
+  type: ClusterIP

@@ -1,0 +1,17 @@
+# medi-track-gateway-service.yaml
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: medi-track-gateway-green
+  labels:
+    app: medi-track-gateway
+    version: green
+spec:
+  selector:
+    app: medi-track-gateway
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
