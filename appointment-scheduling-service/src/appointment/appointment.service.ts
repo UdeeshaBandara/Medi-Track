@@ -39,4 +39,12 @@ export class AppointmentService {
   async remove(id: number) {
     await this.appointmentRepository.delete(id);
   }
+  async getAppointmentCountByDoctor() {
+    return this.appointmentRepository
+    .createQueryBuilder('appointment')
+    .select('appointment.doctor_id', 'doctor_id')
+    .addSelect('COUNT(appointment.id)', 'count')
+    .groupBy('appointment.doctor_id')
+    .getRawMany();
+  }
 }

@@ -2,32 +2,33 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
-@Controller('doctor')
+@Controller()
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
 
-  @Post()
+  @MessagePattern('doctor_create')
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
   }
 
-  @Get()
+  @MessagePattern('doctor_find_all')
   findAll() {
     return this.doctorService.findAll();
   }
 
-  @Get(':id')
+  @MessagePattern('doctor_find_one')
   findOne(@Param('id') id: string) {
     return this.doctorService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
-    return this.doctorService.update(+id, updateDoctorDto);
+  @MessagePattern('doctor_update')
+  update(@Body() updateDoctorDto: UpdateDoctorDto) {
+    return this.doctorService.update(updateDoctorDto.id, updateDoctorDto);
   }
 
-  @Delete(':id')
+  @MessagePattern('doctor_delete')
   remove(@Param('id') id: string) {
     return this.doctorService.remove(+id);
   }

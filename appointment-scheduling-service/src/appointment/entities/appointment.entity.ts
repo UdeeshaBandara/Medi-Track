@@ -1,15 +1,10 @@
 import { AbstractEntity } from "src/database/abstract.entity";
 import {
     Column,
-    Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    OneToMany,
-    ManyToOne
+    Entity
   } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'medi-track-appointment-service' })
 export class Appointment extends AbstractEntity<Appointment>  {
  
     @Column()
@@ -27,7 +22,10 @@ export class Appointment extends AbstractEntity<Appointment>  {
     @Column()
     status: number;
  
-    // @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
-    // patient: Patient;
+    @Column()
+    patient_id: number;
+ 
+    @Column()
+    doctor_id: number;
 
 }

@@ -9,10 +9,10 @@ import { LabResultController } from './lab-result/lab-result.controller';
 import { NotificationService } from './notification/notification.service';
 import { NotificationController } from './notification/notification.controller';
 import { DatabaseModule } from 'src/database/database.module';
-
-
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DoctorController } from './doctor/doctor.controller';
+import { DoctorService } from './doctor/doctor.service';
 
 
 @Module({
@@ -55,7 +55,7 @@ import { AuthModule } from './auth/auth.module';
       }
     ])
   ],
-  controllers: [AppController, AppointmentController, LabResultController, NotificationController],
-  providers: [AppService, AppointmentService, LabResultService, NotificationService],
+  controllers: [AppController, AppointmentController, LabResultController, NotificationController,DoctorController],
+  providers: [AppService, AppointmentService, LabResultService, NotificationService, DoctorService],
 })
 export class AppModule { }

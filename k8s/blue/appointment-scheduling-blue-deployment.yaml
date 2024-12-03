@@ -31,8 +31,8 @@ spec:
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: mysql-db
-                  key: MYSQL_DATABASE
+                  name: mysql-db-appointment
+                  key: MYSQL_DATABASE_APPOINTMENT
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

@@ -1,4 +1,6 @@
 export class CreateDoctorDto {
+
+    id?: number;
  
     name: string;
  

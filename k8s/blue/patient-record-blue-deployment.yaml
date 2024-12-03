@@ -31,8 +31,8 @@ spec:
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: mysql-db
-                  key: MYSQL_DATABASE
+                  name: mysql-db-patient-record
+                  key: MYSQL_DATABASE_PATIENT_RECORD
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

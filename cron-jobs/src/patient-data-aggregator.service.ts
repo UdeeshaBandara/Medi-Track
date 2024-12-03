@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 export class PatientAggregationService {
 
     constructor(
-        @Inject('PATIENTRECORD') private readonly patientRecordClient: ClientProxy,
+        @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
         @InjectRepository(PatientSummary)
         private readonly patientSummaryRepository: Repository<PatientSummary>,
         private readonly entityManager: EntityManager
@@ -18,9 +18,9 @@ export class PatientAggregationService {
     async aggregateData() {
 
         const patients = await firstValueFrom(
-            this.patientRecordClient.send('patient_find_all', {})
+            this.appointmentClient.send('appointment_count_by_doctor', {})
         );
-
+       
         const patientCount = Array.isArray(patients) ? patients.length : 0;
 
         const user = new PatientSummary({

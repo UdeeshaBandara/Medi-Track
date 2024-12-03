@@ -12,6 +12,7 @@ spec:
             - name: medi-track-cron-jobs
               image: medi-track-cron-jobs:latest
               imagePullPolicy: IfNotPresent
+              command: ["node", "dist/patient-data.job.js"]
               env:
                 - name: DB_HOST
                   valueFrom:

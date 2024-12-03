@@ -32,4 +32,10 @@ export class AppointmentController {
   remove(id: string) {
     return this.appointmentService.remove(+id);
   }
+
+  @MessagePattern('appointment_count_by_doctor')
+  getAppointmentCountByDoctor() {
+
+    return this.appointmentService.getAppointmentCountByDoctor();
+  }
 }

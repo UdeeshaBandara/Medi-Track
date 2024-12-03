@@ -1,35 +1,23 @@
 import { AbstractEntity } from "src/database/abstract.entity";
-// import { Patient } from "src/patient/entities/patient.entity";
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    OneToMany,
-    ManyToOne
-  } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
-@Entity()
-export class Doctor extends AbstractEntity<Doctor>  {
+@Entity({ schema: 'medi-track-appointment-service' })
+export class Doctor extends AbstractEntity<Doctor> {
 
-    @Column()
-    name: string;
- 
-    @Column()
-    email: string;
-    
-    @Column()
-    specialization: string;
+  @Column()
+  name: string;
 
-    @Column()
-    availability: Date;
- 
-    @Column()
-    phone_number: number;
- 
-    // @ManyToOne(() => Patient, (patient) => patient.medicalHistory)
-    // patient: Patient;
+  @Column()
+  email: string;
+
+  @Column()
+  specialization: string;
+
+  @Column()
+  availability: Date;
+
+  @Column()
+  phone_number: number;
 
 }
 
