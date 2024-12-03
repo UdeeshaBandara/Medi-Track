@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateAppointmentRequest } from './create-appointment-request.dto';
 import { AppointmentService } from './appointment.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('appointment')

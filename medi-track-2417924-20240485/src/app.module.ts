@@ -8,7 +8,7 @@ import { LabResultService } from './lab-result/lab-result.service';
 import { LabResultController } from './lab-result/lab-result.controller';
 import { NotificationService } from './notification/notification.service';
 import { NotificationController } from './notification/notification.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '../src/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DoctorController } from './doctor/doctor.controller';

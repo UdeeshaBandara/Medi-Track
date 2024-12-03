@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpException, Post, Request, UseGuards } from '@nestjs/common';
+import {  Body, Controller, HttpException, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
@@ -21,6 +21,7 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
+  
   @Post('register')
   async register(@Body() body: { username: string; password: string }) {
     const { username, password } = body;

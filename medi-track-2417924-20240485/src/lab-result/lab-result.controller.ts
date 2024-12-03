@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { LabResultService } from './lab-result.service';
 import { CreateLabResultRequest } from './create-lab-result-request.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('lab-result')
