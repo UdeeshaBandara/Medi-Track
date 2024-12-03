@@ -26,9 +26,6 @@ export class PatientService {
 
   async findAll() {
     Logger.log('PatientService', 'findAll ');
-    return await this.appointmentClient.send(
-      'appointment_find_all', {}
-    );  
     return this.patientRepository.find();
   }
 

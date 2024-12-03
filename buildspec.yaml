@@ -14,6 +14,12 @@ phases:
     
       - docker build -t patient-record-service -f ./patient-record-service/Dockerfile ./patient-record-service
       - docker tag patient-record-service:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
+
+      - docker build -t file-handler -f ./file-handler/Dockerfile ./file-handler
+      - docker tag file-handler:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
+
+      - docker build -t appointment-scheduling -f ./appointment-scheduling-service/Dockerfile ./appointment-scheduling-service
+      - docker tag appointment-scheduling-service:latest 405894865394.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling-service:latest
   post_build: 
     commands:
       - docker push 405894865394.dkr.ecr.us-east-1.amazonaws.com/notification:latest

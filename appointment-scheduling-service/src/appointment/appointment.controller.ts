@@ -2,17 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { MessagePattern } from '@nestjs/microservices';
+import * as moment from "moment";
 
-@Controller()
+@Controller('appointment')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) { }
 
   @MessagePattern('appointment_created')
+  // @Post()
   create(@Body() createPatientDto: CreateAppointmentDto) {
-    return this.appointmentService.create(createPatientDto);
+    return this.appointmentService.create({ ...createPatientDto, appointment_date: moment(new Date()).format('YYYY-MM-DD') });
   }
 
   @MessagePattern('appointment_find_all')
+  // @Get()
   findAll() {
     return this.appointmentService.findAll();
   }
@@ -34,8 +37,16 @@ export class AppointmentController {
   }
 
   @MessagePattern('appointment_count_by_doctor')
+  // @Get('cron')
   getAppointmentCountByDoctor() {
 
     return this.appointmentService.getAppointmentCountByDoctor();
+  }
+
+  @MessagePattern('appointment_summary')
+  // @Get('cron')
+  appointmentSummary() {
+
+    return this.appointmentService.appointmentSummary();
   }
 }

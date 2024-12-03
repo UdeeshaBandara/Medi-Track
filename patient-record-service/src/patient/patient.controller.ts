@@ -1,7 +1,7 @@
-import { Controller, Body, Inject } from '@nestjs/common';
+import { Controller, Body } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { ClientProxy, MessagePattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { Logger } from '@nestjs/common';
 
 @Controller()

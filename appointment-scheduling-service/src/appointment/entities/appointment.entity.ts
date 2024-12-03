@@ -11,7 +11,7 @@ export class Appointment extends AbstractEntity<Appointment>  {
     reason_for_visit: string;
 
     @Column()
-    appointment_date: Date;
+    appointment_date: string;
 
     @Column()
     start_time: Date;

@@ -14,4 +14,4 @@ COPY . .
 RUN npm run build 
 
 # Start the Nest.js application
-CMD ["node", "dist/patient-data.job.js"]
+CMD ["node", "dist/appointments-per-doctor.job.js"]

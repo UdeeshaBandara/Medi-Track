@@ -2,7 +2,7 @@ export class CreateAppointmentDto {
     
     reason_for_visit: string;
 
-    appointment_date: Date;
+    appointment_date: string;
   
     start_time: Date;
 

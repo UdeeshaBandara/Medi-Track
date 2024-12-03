@@ -3,7 +3,8 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { Appointment } from './entities/appointment.entity';
+import {  Appointment } from './entities/appointment.entity';
+import * as moment from "moment";
 
 @Injectable()
 export class AppointmentService {
@@ -39,12 +40,22 @@ export class AppointmentService {
   async remove(id: number) {
     await this.appointmentRepository.delete(id);
   }
+  
   async getAppointmentCountByDoctor() {
     return this.appointmentRepository
-    .createQueryBuilder('appointment')
-    .select('appointment.doctor_id', 'doctor_id')
-    .addSelect('COUNT(appointment.id)', 'count')
-    .groupBy('appointment.doctor_id')
-    .getRawMany();
+      .createQueryBuilder('appointment')
+      .select('appointment.doctor_id', 'doctor_id')
+      .addSelect('COUNT(appointment.id)', 'count')
+      .where('appointment.appointment_date = :date', { date: moment(new Date()).format('YYYY-MM-DD') })
+      .groupBy('appointment.doctor_id')
+      .getRawMany();
+  }
+
+  async appointmentSummary() {
+    return this.appointmentRepository
+      .createQueryBuilder('appointment')
+      .addSelect('COUNT(appointment.id)', 'count')
+      .where('appointment.appointment_date = :date', { date: moment(new Date()).format('YYYY-MM-DD') })
+      .getRawMany();
   }
 }

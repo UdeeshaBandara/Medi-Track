@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: patient-aggregation-job
+  name: appointments-per-doctor-job-blue
 spec:
-  schedule: "* * * * *" 
+  schedule: "0 0 * * *" 
   jobTemplate:
     spec:
       template:
@@ -12,7 +12,7 @@ spec:
             - name: medi-track-cron-jobs
               image: medi-track-cron-jobs:latest
               imagePullPolicy: IfNotPresent
-              command: ["node", "dist/patient-data.job.js"]
+              command: ["node", "dist/appointments-per-doctor.job.js"]
               env:
                 - name: DB_HOST
                   valueFrom:

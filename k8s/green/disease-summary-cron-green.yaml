@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: disease-summary-job-green
+spec:
+  schedule: "0 0 * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: medi-track-cron-jobs
+              image: medi-track-cron-jobs:latest
+              imagePullPolicy: IfNotPresent
+              command: ["node", "dist/disease.summary.job.js"]
+              env:
+                - name: DB_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: mysql-host
+                      key: MYSQL_HOST
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: mysql-db
+                      key: MYSQL_DATABASE
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: mysql-username
+                      key: MYSQL_USERNAME
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: mysql-password
+                      key: MYSQL_PASSWORD
+                - name: DB_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: mysql-port
+                      key: MYSQL_PORT
+          restartPolicy: OnFailure

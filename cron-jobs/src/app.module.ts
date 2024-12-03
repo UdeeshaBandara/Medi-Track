@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PatientSummary } from './entities/patient.summary.entity';
-import { PatientAggregationService } from './patient-data-aggregator.service';
+import { AppointmentSummaryPerDoctor } from './entities/appointment.summary.doctor.entity';
+import { PatientAggregationService } from './appointment-records.service';
+import { AppointmentRecordService } from './appointments-per-doctor.service';
+import { DiseaseSummaryService } from './disease-summary.service';
+import { DiseaseSummary } from './entities/disease.summary.entity';
+import { AppointmentSummary } from './entities/appointment.summary.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forFeature([PatientSummary]),
+    TypeOrmModule.forFeature([AppointmentSummaryPerDoctor, AppointmentSummary, DiseaseSummary]),
     DatabaseModule,
     ClientsModule.register([
       {
@@ -48,7 +50,7 @@ import { PatientAggregationService } from './patient-data-aggregator.service';
       }
     ])
   ],
-  controllers: [AppController],
-  providers: [AppService, PatientAggregationService],
+  controllers: [],
+  providers: [PatientAggregationService, AppointmentRecordService, DiseaseSummaryService],
 })
 export class AppModule { }
