@@ -19,8 +19,8 @@ spec:
         version: blue
     spec:
       containers:
-        - name: 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling
-          image: appointment-scheduling:latest
+        - name: appointment-scheduling
+          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_HOST
