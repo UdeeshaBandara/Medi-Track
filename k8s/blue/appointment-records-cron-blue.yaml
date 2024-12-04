@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: medi-track-cron-jobs
-              image: medi-track-cron-jobs:latest
+              image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-cron-jobs:latest
               imagePullPolicy: IfNotPresent
               command: ["node", "dist/appointment-records.job.js"]
               env:

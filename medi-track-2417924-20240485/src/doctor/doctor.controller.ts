@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateDoctorRequest } from './create-doctor-request.dto';
 import { DoctorService } from './doctor.service';
-import { JwtAuthGuard } from '../../src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('doctor')

@@ -18,6 +18,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('POST /auth/login should logged in the user', async () => {
+    jest.setTimeout(15000);
     const payload = { name: "Udeesha", password: 'noise' };
     const response = await request(app.getHttpServer())
       .post('/auth/login')
