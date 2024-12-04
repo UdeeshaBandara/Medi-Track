@@ -4,32 +4,51 @@ phases:
   pre_build:
     commands: 
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 061051254585.dkr.ecr.us-east-1.amazonaws.com
+      # Install kubectl (if not already installed in your CodeBuild image)
+      - echo "Installing kubectl..."
+      - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+      
+      # Authenticate kubectl with EKS cluster
+      - echo "Authenticating kubectl with EKS cluster..."
+      - aws eks update-kubeconfig --region us-east-1 --name medi-track-cluster
   build:
     commands:
-      - docker build -t notification -f ./notification-service/Dockerfile ./notification-service
-      - docker tag notification:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
-
       - docker build -t medi-track-gateway -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       - docker tag medi-track-gateway:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
-    
+
       - docker build -t patient-record-service -f ./patient-record-service/Dockerfile ./patient-record-service
       - docker tag patient-record-service:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
+
+      - docker build -t appointment-scheduling -f ./appointment-scheduling-service/Dockerfile ./appointment-scheduling-service
+      - docker tag appointment-scheduling:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
+
+      - docker build -t notification -f ./notification-service/Dockerfile ./notification-service
+      - docker tag notification:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
 
       - docker build -t file-handler -f ./file-handler/Dockerfile ./file-handler
       - docker tag file-handler:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
 
-      - docker build -t appointment-scheduling -f ./appointment-scheduling-service/Dockerfile ./appointment-scheduling-service
-      - docker tag appointment-scheduling:latest 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
+
   post_build: 
     commands:
-      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
-      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
       - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
-      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
+      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
       - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
+      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
+      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
       # Run end-to-end tests for medi-track-gateway
+      - echo "Running end-to-end tests for medi-track-gateway..."
+      - cd ./medi-track-2417924-20240485
+      - npm install
       - |
-        echo "Running end-to-end tests for medi-track-gateway..."
-        cd ./medi-track-2417924-20240485
-        npm install
-        npm run test:e2e
+        if npm run test:e2e; then
+          echo "End-to-end tests passed. Updating Kubernetes deployment..."
+          kubectl set image deployment/medi-track-gateway medi-track-gateway-container=061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
+          echo "Verifying rollout status..."
+          kubectl rollout status deployment/medi-track-gateway
+        else
+          echo "End-to-end tests failed. Deployment update aborted."
+          exit 1
+        fi
