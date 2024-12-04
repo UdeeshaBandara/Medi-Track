@@ -1,5 +1,5 @@
 # Use the official Node.js image
-FROM node:23.1 as production
+FROM public.ecr.aws/docker/library/node:lts-slim as production
 
 # Set the working directory
 WORKDIR /src
