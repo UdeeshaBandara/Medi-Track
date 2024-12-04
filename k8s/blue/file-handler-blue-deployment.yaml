@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: file-handler
-          image: file-handler:latest
+          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_HOST
@@ -50,4 +50,9 @@ spec:
                   key: MYSQL_PORT
           ports:
             - containerPort: 4001
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
 

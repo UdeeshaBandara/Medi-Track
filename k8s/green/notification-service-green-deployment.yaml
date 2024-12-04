@@ -50,3 +50,8 @@ spec:
                   key: MYSQL_PORT
           ports:
             - containerPort: 4003
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0

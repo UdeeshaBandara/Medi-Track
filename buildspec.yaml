@@ -27,3 +27,9 @@ phases:
       - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
       - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
       - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
+      # Run end-to-end tests for medi-track-gateway
+      - |
+        echo "Running end-to-end tests for medi-track-gateway..."
+        cd ./medi-track-2417924-20240485
+        npm install
+        npm run test:e2e
