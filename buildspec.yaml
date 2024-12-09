@@ -40,7 +40,7 @@ phases:
       # - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/appointment-scheduling:latest
       # - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
       # - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
-      # - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
+      - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:latest
       # - docker push 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-cron-jobs:latest
       # Run end-to-end tests for medi-track-gateway
       # - echo "Running end-to-end tests for medi-track-gateway..."
