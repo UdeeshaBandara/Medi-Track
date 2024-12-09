@@ -12,7 +12,7 @@ phases:
       
       # Authenticate kubectl with EKS cluster
       - echo "Authenticating kubectl with EKS cluster..."
-      - aws eks update-kubeconfig --region us-east-1 --name medi-track-cluster
+      - aws eks update-kubeconfig --region us-east-1 --name medi-track
   build:
     commands:
       - docker build -t medi-track-gateway -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
