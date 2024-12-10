@@ -5,8 +5,8 @@ import { Upload } from "@aws-sdk/lib-storage";
 
 @Injectable()
 export class AppService {
-  
-  constructor(private readonly configService: ConfigService) {}
+
+  constructor(private readonly configService: ConfigService) { }
 
   private readonly s3Client = new S3Client({
     credentials: {
@@ -20,13 +20,16 @@ export class AppService {
   async upload(fileName: string, file: Buffer) {
     const parallelUploads3 = new Upload({
       client: this.s3Client,
-      params:{
+      params: {
         Bucket: 'medi-track-documents-20240485',
         Key: fileName,
         Body: Buffer.from(file),
       }
-  
+
     });
     await parallelUploads3.done();
+    return {
+      message: 'File uploaded successfully',
+    }
   }
 }

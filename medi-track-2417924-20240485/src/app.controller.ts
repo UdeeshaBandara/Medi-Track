@@ -10,18 +10,13 @@ import { AppService } from './app.service';
 import { CreatePatientRequest } from './create-patient-request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Logger } from '@nestjs/common';
-// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('patient')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    Logger.log('getHello', 'AppController');
-    return this.appService.getHello();
-  }
 
   @Post()
   createPatient(@Body() createUserRequest: CreatePatientRequest) {
@@ -63,6 +58,6 @@ export class AppController {
     )
     file: Express.Multer.File,
   ) {
-    await this.appService.uploadFiles(file.originalname, file.buffer);
+    return this.appService.uploadFiles(file.originalname, file.buffer);
   }
 }

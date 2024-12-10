@@ -15,11 +15,6 @@ export class AppService {
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }
 
-  getHello(): string {
-    Logger.log('getHello', 'AppService');
-    return 'Hello Triggered 2!';
-  }
-
   async createUser(createUserRequest: CreatePatientRequest) {
 
     return await this.patientRecordClient.send(
@@ -58,12 +53,13 @@ export class AppService {
     );
   }
 
-  uploadFiles(fileName: string, file: Buffer) {
 
-    this.uploadClient.send(
+  async uploadFiles(fileName: string, file: Buffer) {
+    return await this.uploadClient.send(
       'file_upload',
-      new FileUploadEvent(fileName, file),
+      new FileUploadEvent(fileName, file)
     );
   }
+ 
 
 }
