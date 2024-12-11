@@ -61,17 +61,18 @@ phases:
       # - kubectl rollout status deployment/$NOTIFICATION_DEPLOYMENT_NAME
       # - kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:latest
       # - kubectl rollout status deployment/$FILE_HANDLER_DEPLOYMENT_NAME
-      - kubectl set image deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
-      - kubectl rollout status deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME
-      - kubectl set image deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
-      - kubectl rollout status deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME
-      - kubectl set image deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
-      - kubectl rollout status deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME
+      - kubectl set image deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
+      - kubectl rollout status deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
+      - kubectl set image deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
+      - kubectl rollout status deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
+      - kubectl set image deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
+      - kubectl rollout status deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME -n $NAMESPACE
 env:
   variables:
     AWS_ACCOUNT_ID: "061051254585"
     AWS_DEFAULT_REGION: "us-east-1"
     CLUSTER_NAME: "medi-track"
+    NAMESPACE: "medi-track-blue"
     MEDI_TRACK_ECR_REPOSITORY: "medi-track-gateway"
     MEDI_TRACK_DEPLOYMENT_NAME: "medi-track-gateway-blue"
     PATIENT_RECORD_ECR_REPOSITORY: "patient-record-service"
