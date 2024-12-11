@@ -5,7 +5,7 @@ FROM public.ecr.aws/docker/library/node:lts-slim as production
 WORKDIR /src
 
 # Copy package files and install dependencies
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application
