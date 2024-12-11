@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: default
+  name: deployer-role-binding
+subjects:
+  - kind: User
+    name: codebuild-role # Must match the username from aws-auth
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: deployer-role
+  apiGroup: rbac.authorization.k8s.io
