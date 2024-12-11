@@ -11,7 +11,6 @@ import { DiseaseSummary } from './entities/disease.summary.entity';
 import { AppointmentSummary } from './entities/appointment.summary.entity';
 import { RedshiftModule } from './redshift.module';
 import { RedshiftService } from './redshift.service';
-import { RedshiftController } from './redshift.controller';
 
 @Module({
   imports: [
@@ -54,7 +53,7 @@ import { RedshiftController } from './redshift.controller';
       }
     ])
   ],
-  controllers: [RedshiftController],
+  controllers: [],
   providers: [PatientAggregationService, AppointmentRecordService, DiseaseSummaryService, RedshiftService],
 })
 export class AppModule { }
