@@ -6,6 +6,10 @@ metadata:
 data:
   mapRoles: |
     # This section maps IAM roles to Kubernetes RBAC groups
+    - rolearn: arn:aws:iam::061051254585:role/codebuild-role
+      username: codebuild-role
+      groups:
+        - eks-deploy-group
     - rolearn: arn:aws:iam::061051254585:role/EKSNodeInstanceRole
       username: system:node:{{EC2PrivateDNSName}}
       groups:
