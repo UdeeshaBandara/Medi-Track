@@ -9,7 +9,7 @@ export class NotificationController {
   @MessagePattern('trigger_notification')
   async triggerSNSNotification(@Body() payload: { topicArn: string; message: string }) {
     await this.notificationService.sendPushNotificationToSNS(payload.topicArn, payload.message);
-    return { message: 'SNS notification triggered successfully' };
+    return { message: 'Notification triggered successfully' };
   }
 
   
