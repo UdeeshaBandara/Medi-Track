@@ -69,6 +69,7 @@ phases:
       - kubectl rollout status deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME
 env:
   variables:
+    AWS_ACCOUNT_ID: "061051254585"
     AWS_DEFAULT_REGION: "us-east-1"
     CLUSTER_NAME: "medi-track"
     MEDI_TRACK_ECR_REPOSITORY: "medi-track-gateway"
