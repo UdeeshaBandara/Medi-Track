@@ -58,7 +58,7 @@ phases:
       # - kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout status deployment/$APPOINTMENTS_DEPLOYMENT_NAME -n $NAMESPACE
       - kubectl set image deployment/$NOTIFICATION_DEPLOYMENT_NAME $NOTIFICATION_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:latest -n $NAMESPACE
-      - kubectl rollout status deployment/$NOTIFICATION_DEPLOYMENT_NAME -n $NAMESPACE
+      - kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout status deployment/$FILE_HANDLER_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
