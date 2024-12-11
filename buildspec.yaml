@@ -52,7 +52,7 @@ phases:
       #     echo "Verifying rollout status..."
       #     kubectl rollout status deployment/medi-track-gateway
       - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest -n $NAMESPACE
-      - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME -n $NAMESPACE -n $NAMESPACE
+      - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:latest -n $NAMESPACE

@@ -45,7 +45,7 @@ export class AppController {
    return this.appService.deletePatient(id);
   }
 
-  @Post('files')
+  @Post('file-upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile(
