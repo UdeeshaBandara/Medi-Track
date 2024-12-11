@@ -5,7 +5,7 @@ metadata:
   name: codebuild-role-binding
 subjects:
   - kind: User
-    name: kubectl-user
+    name: codebuild-role
     apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role

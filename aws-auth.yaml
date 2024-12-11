@@ -10,11 +10,6 @@ data:
       username: codebuild-role
       groups:
         - eks-deploy-group
-    - rolearn: arn:aws:iam::061051254585:role/EKSNodeInstanceRole
-      username: system:node:{{EC2PrivateDNSName}}
-      groups:
-        - system:bootstrappers
-        - system:nodes
 
   mapUsers: |
     # This section maps IAM users to Kubernetes RBAC groups
