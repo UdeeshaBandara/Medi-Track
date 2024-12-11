@@ -40,16 +40,105 @@ resource "aws_iam_policy" "ecr_policy" {
           "ecr:CompleteLayerUpload",
           "ecr:UploadLayerPart",
           "ecr:PutImage",
-          "ecr:InitiateLayerUpload"
+          "ecr:InitiateLayerUpload",
+          "ecr:GetDownloadUrlForLayer",
         ]
         Resource = "*"
       }
     ]
   })
 }
+resource "aws_iam_policy" "eks_kubectl_policy" {
+  name        = "EKS-Kubectl-Policy"
+  description = "Policy for EKS kubectl set image and rollout actions"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid       = "EKSAccess"
+        Effect    = "Allow"
+        Action    = [
+          "eks:DescribeCluster",
+        ]
+        Resource = "arn:aws:eks:us-east-1:061051254585:cluster/medi-track"
+      },
+      {
+        Sid       = "KubernetesActions"
+        Effect    = "Allow"
+        Action    = [
+          "eks:AssumeRoleWithWebIdentity"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+resource "aws_iam_policy" "eks_access_policy" {
+  name        = "eks-access-policy"
+  description = "Policy for EKS access to describe and list clusters"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster"
+        ]
+        Resource = "arn:aws:eks:us-east-1:061051254585:cluster/medi-track"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:ListClusters"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRole"
+        ]
+        Resource = "arn:aws:iam::061051254585:role/ng-1"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "tf-cicd-codebuild-attachment2" {
+  policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"
+  role       = aws_iam_role.codebuild_role.id
+}
+
+resource "aws_iam_user" "kubectl_user" {
+  name = "kubectl-user"
+}
+
+resource "aws_iam_user_policy_attachment" "kubectl_policy_attach" {
+  user       = aws_iam_user.kubectl_user.name
+  policy_arn = aws_iam_policy.eks_kubectl_policy.arn
+}
+
 resource "aws_iam_role_policy_attachment" "ecr_attach" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = aws_iam_policy.ecr_policy.arn
+}
+resource "aws_iam_role_policy_attachment" "eks_attach" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.eks_access_policy.arn
 }
 
 
@@ -110,7 +199,7 @@ data "aws_iam_policy_document" "codebuild_assume_role_policy" {
   }
 }
 resource "aws_codebuild_source_credential" "github" {
-  auth_type     = "PERSONAL_ACCESS_TOKEN"
-  server_type   = "GITHUB"
-  token         = aws_secretsmanager_secret_version.github_token_version.secret_string
+  auth_type   = "PERSONAL_ACCESS_TOKEN"
+  server_type = "GITHUB"
+  token       = aws_secretsmanager_secret_version.github_token_version.secret_string
 }

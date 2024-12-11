@@ -4,6 +4,7 @@ import { AppointmentSummaryPerDoctor } from './entities/appointment.summary.doct
 import { EntityManager, Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { RedshiftService } from './redshift.service';
 
 @Injectable()
 export class AppointmentRecordService {
@@ -11,8 +12,7 @@ export class AppointmentRecordService {
     constructor(
         @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
         @InjectRepository(AppointmentSummaryPerDoctor)
-        private readonly patientSummaryRepository: Repository<AppointmentSummaryPerDoctor>,
-        private readonly entityManager: EntityManager
+        private readonly redshiftService: RedshiftService
     ) { }
 
     async appointmentCountByDoctor() {
@@ -21,20 +21,20 @@ export class AppointmentRecordService {
             this.appointmentClient.send('appointment_count_by_doctor', {})
         );
        
-        let apppointmentSummary = [];
+        let apppointmentSummaryPromises = [];
         const execDate = new Date().toISOString();
 
         patients.forEach(element => {
-            apppointmentSummary.push(
-                new AppointmentSummaryPerDoctor({
+            apppointmentSummaryPromises.push(
+                this.redshiftService.insertData('appointment_summary_per_doctor', {
                     date: execDate,
                     doctor_id: +element.doctor_id,
                     totalAppointments: +element.count
                 })
             )
         });
+        await Promise.all(apppointmentSummaryPromises);
       
-        return this.entityManager.save(apppointmentSummary);
 
     }
 

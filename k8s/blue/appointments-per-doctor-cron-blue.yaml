@@ -14,29 +14,29 @@ spec:
               imagePullPolicy: IfNotPresent
               command: ["node", "dist/appointments-per-doctor.job.js"]
               env:
-                - name: DB_HOST
+                - name: REDSHIFT_USER
                   valueFrom:
                     secretKeyRef:
-                      name: mysql-host
-                      key: MYSQL_HOST
-                - name: DB_NAME
+                      name: redshift-user
+                      key: REDSHIFT_USER
+                - name: REDSHIFT_HOST
                   valueFrom:
                     secretKeyRef:
-                      name: mysql-db
-                      key: MYSQL_DATABASE
-                - name: DB_USER
+                      name: redshift-host
+                      key: REDSHIFT_HOST
+                - name: REDSHIFT_DB
                   valueFrom:
                     secretKeyRef:
-                      name: mysql-username
-                      key: MYSQL_USERNAME
-                - name: DB_PASSWORD
+                      name: redshift-db
+                      key: REDSHIFT_DB
+                - name: REDSHIFT_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: mysql-password
-                      key: MYSQL_PASSWORD
-                - name: DB_PORT
+                      name: redshift-password
+                      key: REDSHIFT_PASSWORD
+                - name: REDSHIFT_PORT
                   valueFrom:
                     secretKeyRef:
-                      name: mysql-port
-                      key: MYSQL_PORT
+                      name: redshift-port
+                      key: REDSHIFT_PORT
           restartPolicy: OnFailure

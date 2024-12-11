@@ -1,111 +1,8 @@
-
-
-# # Define the S3 bucket for CodePipeline artifacts
-# resource "aws_s3_bucket" "codepipeline_bucket" {
-#   bucket        = "medi-track-codepipeline-artifacts-${var.unique_suffix}"
-#   force_destroy = true
-# }
-
-# # Define the IAM role for CodePipeline
-# resource "aws_iam_role" "codepipeline_role" {
-#   name = "codepipeline-role"
-
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Effect = "Allow"
-#         Principal = {
-#           Service = "codepipeline.amazonaws.com"
-#         }
-#         Action = "sts:AssumeRole"
-#       }
-#     ]
-#   })
-# }
-
-# # Attach policies to the CodePipeline role
-# resource "aws_iam_role_policy_attachment" "codepipeline_policy_attach" {
-#   role       = aws_iam_role.codepipeline_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSCodePipelineFullAccess"
-# }
-
-# resource "aws_iam_role_policy_attachment" "codepipeline_s3_access" {
-#   role       = aws_iam_role.codepipeline_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-# }
-
-# # Define the CodePipeline
-# resource "aws_codepipeline" "medi_track_pipeline" {
-#   name     = "medi-track-pipeline"
-#   role_arn = aws_iam_role.codepipeline_role.arn
-
-#   artifact_store {
-#     location = aws_s3_bucket.codepipeline_bucket.bucket
-#     type     = "S3"
-#   }
-
-#   stage {
-#     name = "Source"
-
-#     action {
-#       name             = "Source"
-#       category         = "Source"
-#       owner            = "AWS"
-#       provider         = "GitHub"
-#       version          = "1"
-#       output_artifacts = ["source_output"]
-
-#       configuration = {
-#         Owner      = var.github_repo_owner
-#         Repo       = var.github_repo_name
-#         Branch     = var.github_repo_branch
-#         OAuthToken = "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" 
-#       }
-#     }
-#   }
-
-#   stage {
-#     name = "Build"
-
-#     action {
-#       name             = "Build"
-#       category         = "Build"
-#       owner            = "AWS"
-#       provider         = "CodeBuild"
-#       version          = "1"
-#       input_artifacts  = ["source_output"]
-#       output_artifacts = ["build_output"]
-
-#       configuration = {
-#         ProjectName = "medi-track-pipeline"
-#       }
-#     }
-#   }
-# }
-
 variable "github_token" {
   description = "Personal Access Token for GitHub"
   type        = string
   sensitive   = true
 }
-
-
-# resource "aws_secretsmanager_secret" "github_token" {
-#   name        = "github-token"
-#   description = "Personal Access Token for GitHub"
-# }
-
-# resource "aws_secretsmanager_secret_version" "github_token_version" {
-#   secret_id     = aws_secretsmanager_secret.github_token.id
-#   secret_string = var.github_token
-#   lifecycle {
-#     prevent_destroy = true
-#     ignore_changes  = [secret_string]
-#   }
-# }
-
-
 
 resource "aws_codepipeline" "codepipeline" {
   name     = "medi-track-pipeline"
@@ -154,28 +51,6 @@ resource "aws_codepipeline" "codepipeline" {
       }
     }
   }
-
-  # stage {
-  #   name = "Deploy"
-
-  #   action {
-  #     name            = "Deploy"
-  #     category        = "Deploy"
-  #     owner           = "AWS"
-  #     provider        = "CloudFormation"
-  #     input_artifacts = ["build_output"]
-  #     version         = "1"
-
-  #     configuration = {
-  #       ActionMode     = "REPLACE_ON_FAILURE"
-  #       Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
-  #       OutputFileName = "CreateStackOutput.json"
-  #       StackName      = "MyStack"
-  #       TemplatePath   = "build_output::sam-templated.yaml"
-  #       RoleArn            = aws_iam_role.codepipeline_role.arn
-  #     }
-  #   }
-  # }
 }
 
 resource "aws_codestarconnections_connection" "medi-track-code-star" {
@@ -214,7 +89,6 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_iam_role" "codepipeline_role" {
   name = "codepipeline-deploy-role"
-  # assume_role_policy = data.aws_iam_policy_document.assume_role.json
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -290,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "codepipeline_s3_attachment" {
 data "aws_iam_policy_document" "tf-cicd-build-policies" {
     statement{
         sid = ""
-        actions = ["logs:*", "s3:*", "codebuild:*", "secretsmanager:*","iam:*"]
+        actions = ["logs:*", "s3:*", "codebuild:*", "secretsmanager:*","iam:*","eks:*","ecr:*"]
         resources = ["*"]
         effect = "Allow"
     }
@@ -398,13 +272,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   }
 }
 
-# # Attach the updated service role policy for CodePipeline
-# resource "aws_iam_role_policy_attachment" "codepipeline_service_role" {
-#   role       = aws_iam_role.codepipeline_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodePipelineServiceRole"
-# }
-
-# Additional permissions for S3 access (if needed)
+# Additional permissions for S3 access 
 resource "aws_iam_role_policy_attachment" "codepipeline_s3_access" {
   role       = aws_iam_role.codepipeline_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"

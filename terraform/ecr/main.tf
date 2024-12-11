@@ -17,6 +17,9 @@ resource "aws_ecr_repository" "file_handler_repo" {
 resource "aws_ecr_repository" "appointment_scheduling_repo" {
   name = "appointment-scheduling"
 }
+resource "aws_ecr_repository" "medi_track_cron_jobs_repo" {
+  name = "medi-track-cron-jobs"
+}
 
 output "ecr_repository_urls" {
   value = {
@@ -25,5 +28,6 @@ output "ecr_repository_urls" {
     patient_record_service_repo = aws_ecr_repository.patient_record_service_repo.repository_url
     file_handler_repo           = aws_ecr_repository.file_handler_repo.repository_url
     appointment_scheduling_repo = aws_ecr_repository.appointment_scheduling_repo.repository_url
+    medi_track_cron_jobs_repo = aws_ecr_repository.medi_track_cron_jobs_repo.repository_url
   }
 }

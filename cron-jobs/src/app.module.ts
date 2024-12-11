@@ -9,12 +9,16 @@ import { AppointmentRecordService } from './appointments-per-doctor.service';
 import { DiseaseSummaryService } from './disease-summary.service';
 import { DiseaseSummary } from './entities/disease.summary.entity';
 import { AppointmentSummary } from './entities/appointment.summary.entity';
+import { RedshiftModule } from './redshift.module';
+import { RedshiftService } from './redshift.service';
+import { RedshiftController } from './redshift.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forFeature([AppointmentSummaryPerDoctor, AppointmentSummary, DiseaseSummary]),
     DatabaseModule,
+    RedshiftModule,
     ClientsModule.register([
       {
         name: 'PATIENTRECORD',
@@ -50,7 +54,7 @@ import { AppointmentSummary } from './entities/appointment.summary.entity';
       }
     ])
   ],
-  controllers: [],
-  providers: [PatientAggregationService, AppointmentRecordService, DiseaseSummaryService],
+  controllers: [RedshiftController],
+  providers: [PatientAggregationService, AppointmentRecordService, DiseaseSummaryService, RedshiftService],
 })
 export class AppModule { }
