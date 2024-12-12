@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands: 
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION  | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-      # Install kubectl (if not already installed in your CodeBuild image)
+      # Install kubectl 
       - echo "Installing kubectl..."
       - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x kubectl
@@ -14,8 +14,12 @@ phases:
       - echo "Authenticating kubectl with EKS cluster..."
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+
+      - npm install --prefix medi-track-2417924-20240485
   build:
     commands:
+      - npm run build --prefix medi-track-2417924-20240485 || exit 1
+      - npm run test:e2e --prefix medi-track-2417924-20240485 || exit 1
       # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
@@ -33,7 +37,20 @@ phases:
      
       - docker build -t $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -f ./cron-jobs/Dockerfile ./cron-jobs
       - docker tag $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
-
+  e2e_test:
+    commands:
+      - echo "Running end-to-end tests for medi-track-gateway-blue..."
+      # Clone or ensure the test code is available
+      - git clone https://github.com/your-repo.git
+      - cd your-repo/medi-track-gateway-blue
+      - npm install
+      # Run tests using Jest
+      - npm run test:e2e
+      # Optionally collect and output test results
+      - mkdir -p test-reports
+      - jest --json --outputFile=test-reports/e2e-test-results.json
+      # Fail if tests fail
+      - if [ $? -ne 0 ]; then echo "E2E tests failed!"; exit 1; fi
 
   post_build: 
     commands:
