@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { RedshiftService } from './redshift.service';
 
 @Injectable()
 export class DiseaseSummaryService {
 
     constructor(
         @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
-        private readonly entityManager: EntityManager
+        private readonly redshiftService: RedshiftService
     ) { }
 
     async diseaseSummary() {
@@ -16,21 +16,20 @@ export class DiseaseSummaryService {
         const patients = await firstValueFrom(
             this.appointmentClient.send('appointment_count_by_doctor', {})
         );
-
-        let apppointmentSummary = [];
+       
+        let apppointmentSummaryPromises = [];
         const execDate = new Date().toISOString();
 
         patients.forEach(element => {
-            apppointmentSummary.push(
-                {
+            apppointmentSummaryPromises.push(
+                this.redshiftService.insertData('appointment_summary_per_doctor', {
                     date: execDate,
                     doctor_id: +element.doctor_id,
                     totalAppointments: +element.count
-                }
+                })
             )
         });
-
-        return this.entityManager.save(apppointmentSummary);
+        await Promise.all(apppointmentSummaryPromises);
 
     }
 
