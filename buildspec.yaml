@@ -16,7 +16,7 @@ phases:
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
   build:
     commands:
-      - docker build -t $MEDI_TRACK_ECR_REPOSITORY -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
+      - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest
 
       # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY -f ./patient-record-service/Dockerfile ./patient-record-service
