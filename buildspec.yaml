@@ -37,20 +37,6 @@ phases:
      
       - docker build -t $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -f ./cron-jobs/Dockerfile ./cron-jobs
       - docker tag $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
-  e2e_test:
-    commands:
-      - echo "Running end-to-end tests for medi-track-gateway-blue..."
-      # Clone or ensure the test code is available
-      - git clone https://github.com/your-repo.git
-      - cd your-repo/medi-track-gateway-blue
-      - npm install
-      # Run tests using Jest
-      - npm run test:e2e
-      # Optionally collect and output test results
-      - mkdir -p test-reports
-      - jest --json --outputFile=test-reports/e2e-test-results.json
-      # Fail if tests fail
-      - if [ $? -ne 0 ]; then echo "E2E tests failed!"; exit 1; fi
 
   post_build: 
     commands:
