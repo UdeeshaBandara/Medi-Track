@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: patient-record-service
-          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:latest
+          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/patient-record-service:<unique-tag>
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_HOST

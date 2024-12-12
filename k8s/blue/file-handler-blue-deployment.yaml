@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: file-handler
-          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:latest
+          image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/file-handler:<unique-tag>
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_HOST
