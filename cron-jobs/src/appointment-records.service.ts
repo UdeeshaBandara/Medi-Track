@@ -1,7 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AppointmentSummary } from './entities/appointment.summary.entity';
-import { EntityManager, Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { RedshiftService } from './redshift.service';
@@ -11,7 +8,6 @@ export class PatientAggregationService {
 
     constructor(
         @Inject('APPOINTMENTS') private readonly appointmentClient: ClientProxy,
-        @InjectRepository(AppointmentSummary)
         private readonly redshiftService: RedshiftService
     ) { }
 

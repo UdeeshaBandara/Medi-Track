@@ -15,8 +15,8 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
   build:
     commands:
-      - docker build -t $MEDI_TRACK_ECR_REPOSITORY -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
-      - docker tag $MEDI_TRACK_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest
+      # - docker build -t $MEDI_TRACK_ECR_REPOSITORY -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
+      # - docker tag $MEDI_TRACK_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest
 
       # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY -f ./patient-record-service/Dockerfile ./patient-record-service
       # - docker tag $PATIENT_RECORD_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:latest
@@ -30,18 +30,18 @@ phases:
       # - docker build -t $FILE_HANDLER_ECR_REPOSITORY -f ./file-handler/Dockerfile ./file-handler
       # - docker tag $FILE_HANDLER_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:latest
      
-      # - docker build -t $CRON_JOBS_ECR_REPOSITORY -f ./cron-jobs/Dockerfile ./cron-jobs
-      # - docker tag $CRON_JOBS_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
+      - docker build -t $CRON_JOBS_ECR_REPOSITORY -f ./cron-jobs/Dockerfile ./cron-jobs
+      - docker tag $CRON_JOBS_ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
 
 
   post_build: 
     commands:
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:latest
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:latest
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:latest
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:latest
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest
       # Run end-to-end tests for medi-track-gateway
       # - echo "Running end-to-end tests for medi-track-gateway..."
       # - cd ./medi-track-2417924-20240485
@@ -51,8 +51,8 @@ phases:
       #     kubectl set image deployment/medi-track-gateway medi-track-gateway-container=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:latest
       #     echo "Verifying rollout status..."
       #     kubectl rollout status deployment/medi-track-gateway
-      - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest -n $NAMESPACE
-      - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME -n $NAMESPACE
+      # - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:latest -n $NAMESPACE
+      # - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:latest -n $NAMESPACE
@@ -61,8 +61,8 @@ phases:
       # - kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout restart deployment/$FILE_HANDLER_DEPLOYMENT_NAME -n $NAMESPACE
-      # - kubectl set image deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
-      # - kubectl rollout restart deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
+      - kubectl set image deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
+      - kubectl rollout restart deployment/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
       # - kubectl rollout restart deployment/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME -n $NAMESPACE
       # - kubectl set image deployment/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:latest -n $NAMESPACE
