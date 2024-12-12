@@ -45,9 +45,12 @@ export class AppointmentService {
     return this.appointmentRepository
       .createQueryBuilder('appointment')
       .select('appointment.doctor_id', 'doctor_id')
+      .addSelect('doctor.name', 'doctor_name') 
       .addSelect('COUNT(appointment.id)', 'count')
+      .innerJoin('doctor', 'doctor', 'doctor.id = appointment.doctor_id') 
       .where('appointment.appointment_date = :date', { date: moment(new Date()).format('YYYY-MM-DD') })
       .groupBy('appointment.doctor_id')
+      .addGroupBy('doctor.name') 
       .getRawMany();
   }
 

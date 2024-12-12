@@ -26,7 +26,8 @@ export class AppointmentRecordService {
                 this.redshiftService.insertData('appointment_summary_per_doctor', {
                     date: execDate,
                     doctor_id: +element.doctor_id,
-                    totalAppointments: +element.count
+                    totalAppointments: +element.count,
+                    doctor_name: element.doctor_name
                 })
             )
         });
