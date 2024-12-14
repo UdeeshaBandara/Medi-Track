@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: medi-track-green
+  name: codebuild-role-binding
+subjects:
+  - kind: User
+    name: codebuild-role
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: codebuild-role
+  apiGroup: rbac.authorization.k8s.io
