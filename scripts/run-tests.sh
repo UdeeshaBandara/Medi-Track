@@ -3,7 +3,7 @@
 # Function to switch traffic to green deployment
 switch_to_green() {
   local namespace=$1
-  kubectl patch ingress application-ingress -n "${namespace}" -p '{
+  kubectl patch ingress medi-track -n "${namespace}" -p '{
     "spec": {
       "rules": [{
         "http": {
@@ -28,7 +28,7 @@ switch_to_green() {
 # Function to rollback to blue deployment
 rollback_to_blue() {
   local namespace=$1
-  kubectl patch ingress application-ingress -n "${namespace}" -p '{
+  kubectl patch ingress medi-track -n "${namespace}" -p '{
     "spec": {
       "rules": [{
         "http": {
