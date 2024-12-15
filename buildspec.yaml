@@ -46,12 +46,12 @@ phases:
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
 
-      - if [ "$TARGET_ENV" == "blue" ]; then
+      - if [ "$TARGET_ENV" = "blue" ]; then
           kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue;
           kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue;  
         fi
 
-      - if [ "$TARGET_ENV" == "green" ]; then
+      - if [ "$TARGET_ENV" = "green" ]; then
           kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green;
           kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green -n $NAMESPACE-green;
         fi
