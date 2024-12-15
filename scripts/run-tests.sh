@@ -2,7 +2,8 @@
 
 # Function to switch traffic to green deployment
 switch_to_green() {
-  kubectl patch ingress application-ingress -p '{
+  local namespace=$1
+  kubectl patch ingress application-ingress -n "${namespace}" -p '{
     "spec": {
       "rules": [{
         "http": {
@@ -26,7 +27,8 @@ switch_to_green() {
 
 # Function to rollback to blue deployment
 rollback_to_blue() {
-  kubectl patch ingress application-ingress -p '{
+  local namespace=$1
+  kubectl patch ingress application-ingress -n "${namespace}" -p '{
     "spec": {
       "rules": [{
         "http": {
@@ -52,21 +54,30 @@ rollback_to_blue() {
 run_integration_tests() {
   # Your integration test logic here
   # Return 0 for success, non-zero for failure
-#   kubectl exec test-pod -- /run-tests.sh
+  # kubectl exec test-pod -n $1 -- /run-tests.sh
   return $?
 }
 
 # Main Deployment Logic
 main() {
+  local namespace=$1
+
+  if [[ -z "${namespace}" ]]; then
+    echo "Error: Namespace is required."
+    exit 1
+  fi
+
   # Run integration tests on green deployment
-#   if run_integration_tests; then
-#     echo "Integration tests passed. Switching traffic to green."
-#     switch_to_green
-#   else
-#     echo "Integration tests failed. Keeping traffic on blue."
-#     rollback_to_blue
-#   fi
-    switch_to_green
+  # Uncomment the test logic if needed
+  # if run_integration_tests "${namespace}"; then
+  #   echo "Integration tests passed. Switching traffic to green."
+  #   switch_to_green "${namespace}"
+  # else
+  #   echo "Integration tests failed. Keeping traffic on blue."
+  #   rollback_to_blue "${namespace}"
+  # fi
+
+  switch_to_green "${namespace}"
 }
 
-main
+main "$@"
