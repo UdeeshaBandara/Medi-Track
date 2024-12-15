@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PatientAggregationService } from './appointment-records.service';
 import { AppointmentRecordService } from './appointments-per-doctor.service';
@@ -11,40 +11,52 @@ import { RedshiftService } from './redshift.service';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     RedshiftModule,
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'PATIENTRECORD',
-        transport: Transport.TCP,
-        options: {
-          host: 'patient-record-blue',
-          port: 4000
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('PATIENT_RECORD_HOST', 'patient-record-blue'),
+            port: 4000
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'UPLOADER',
-        transport: Transport.TCP,
-        options: {
-          host: 'file-handler-blue',
-          port: 4001
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('UPLOADER_HOST', 'file-handler-blue'),
+            port: 4001
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'APPOINTMENTS',
-        transport: Transport.TCP,
-        options: {
-          host: 'appointment-scheduling-blue',
-          port: 4002
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('APPOINTMENTS_HOST', 'appointment-scheduling-blue'),
+            port: 4002
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'NOTIFICATIONS',
-        transport: Transport.TCP,
-        options: {
-          host: 'notification-service-blue',
-          port: 4003
-        }
-      }
-    ])
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('NOTIFICATIONS_HOST', 'notification-service-blue'),
+            port: 4003
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
   ],
   controllers: [],
   providers: [PatientAggregationService, AppointmentRecordService, DiseaseSummaryService, RedshiftService],

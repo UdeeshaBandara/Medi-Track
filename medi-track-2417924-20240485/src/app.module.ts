@@ -9,7 +9,7 @@ import { LabResultController } from './lab-result/lab-result.controller';
 import { NotificationService } from './notification/notification.service';
 import { NotificationController } from './notification/notification.controller';
 import { DatabaseModule } from 'src/database/database.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DoctorController } from './doctor/doctor.controller';
 import { DoctorService } from './doctor/doctor.service';
@@ -20,40 +20,52 @@ import { DoctorService } from './doctor/doctor.service';
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     AuthModule,
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'PATIENTRECORD',
-        transport: Transport.TCP,
-        options: {
-          host: 'patient-record-blue',
-          port: 4000
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('PATIENT_RECORD_HOST', 'patient-record-blue'),
+            port: 4000
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'UPLOADER',
-        transport: Transport.TCP,
-        options: {
-          host: 'file-handler-blue',
-          port: 4001
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('UPLOADER_HOST', 'file-handler-blue'),
+            port: 4001
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'APPOINTMENTS',
-        transport: Transport.TCP,
-        options: {
-          host: 'appointment-scheduling-blue',
-          port: 4002
-        }
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('APPOINTMENTS_HOST', 'appointment-scheduling-blue'),
+            port: 4002
+          },
+        }),
+        inject: [ConfigService],
       },
       {
         name: 'NOTIFICATIONS',
-        transport: Transport.TCP,
-        options: {
-          host: 'notification-service-blue',
-          port: 4003
-        }
-      }
-    ])
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get<string>('NOTIFICATIONS_HOST', 'notification-service-blue'),
+            port: 4003
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
   ],
   controllers: [AppController, AppointmentController, LabResultController, NotificationController,DoctorController],
   providers: [AppService, AppointmentService, LabResultService, NotificationService, DoctorService],

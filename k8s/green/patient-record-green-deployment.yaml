@@ -48,6 +48,26 @@ spec:
                 secretKeyRef:
                   name: mysql-port
                   key: MYSQL_PORT
+            - name: PATIENT_RECORD_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: patient-record-host
+                  key: PATIENT_RECORD_HOST
+            - name: UPLOADER_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: file-handler-host
+                  key: FILE_HANDLER_HOST
+            - name: APPOINTMENTS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-host
+                  key: APPOINTMENT_HOST
+            - name: NOTIFICATIONS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: notification-host
+                  key: NOTIFICATION_HOST
           ports:
             - containerPort: 4000
   strategy:
