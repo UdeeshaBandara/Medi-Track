@@ -22,62 +22,62 @@ phases:
       - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
-      - docker build -t $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -f ./patient-record-service/Dockerfile ./patient-record-service
-      - docker tag $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -f ./patient-record-service/Dockerfile ./patient-record-service
+      # - docker tag $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
 
-      - docker build -t $APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -f ./appointment-scheduling-service/Dockerfile ./appointment-scheduling-service
-      - docker tag $APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker build -t $APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -f ./appointment-scheduling-service/Dockerfile ./appointment-scheduling-service
+      # - docker tag $APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
 
-      - docker build -t $NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -f ./notification-service/Dockerfile ./notification-service
-      - docker tag $NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker build -t $NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -f ./notification-service/Dockerfile ./notification-service
+      # - docker tag $NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG
 
-      - docker build -t $FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -f ./file-handler/Dockerfile ./file-handler
-      - docker tag $FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker build -t $FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -f ./file-handler/Dockerfile ./file-handler
+      # - docker tag $FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
      
-      - docker build -t $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -f ./cron-jobs/Dockerfile ./cron-jobs
-      - docker tag $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker build -t $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -f ./cron-jobs/Dockerfile ./cron-jobs
+      # - docker tag $CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
 
   post_build: 
     commands:
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG
 
       - if [ "$TARGET_ENV" == "blue" ]; then
-          kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue  
-          kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
-          kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME-blue $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl rollout restart deployment/$APPOINTMENTS_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
-          kubectl set image deployment/$NOTIFICATION_DEPLOYMENT_NAME-blue $NOTIFICATION_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
-          kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME-blue $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl rollout restart deployment/$FILE_HANDLER_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
+          kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue;
+          kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue;  
+          # kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
+          # kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME-blue $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl rollout restart deployment/$APPOINTMENTS_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
+          # kubectl set image deployment/$NOTIFICATION_DEPLOYMENT_NAME-blue $NOTIFICATION_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
+          # kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME-blue $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl rollout restart deployment/$FILE_HANDLER_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
   
-          kubectl set image cronjob/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl set image cronjob/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-          kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl set image cronjob/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl set image cronjob/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
+          # kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
         fi
 
       - if [ "$TARGET_ENV" == "green" ]; then
-          kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green -n $NAMESPACE-green  
-          kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green -n $NAMESPACE-green
-          kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME-green $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl rollout restart deployment/$APPOINTMENTS_DEPLOYMENT_NAME-green -n $NAMESPACE-green
-          kubectl set image deployment/$NOTIFICATION_DEPLOYMENT_NAME-green $NOTIFICATION_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME-green -n $NAMESPACE-green
-          kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME-green $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl rollout restart deployment/$FILE_HANDLER_DEPLOYMENT_NAME-green -n $NAMESPACE-green
+          kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green;
+          kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green -n $NAMESPACE-green;  
+          # kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green -n $NAMESPACE-green
+          # kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME-green $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl rollout restart deployment/$APPOINTMENTS_DEPLOYMENT_NAME-green -n $NAMESPACE-green
+          # kubectl set image deployment/$NOTIFICATION_DEPLOYMENT_NAME-green $NOTIFICATION_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NOTIFICATION_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl rollout restart deployment/$NOTIFICATION_DEPLOYMENT_NAME-green -n $NAMESPACE-green
+          # kubectl set image deployment/$FILE_HANDLER_DEPLOYMENT_NAME-green $FILE_HANDLER_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl rollout restart deployment/$FILE_HANDLER_DEPLOYMENT_NAME-green -n $NAMESPACE-green
   
-          kubectl set image cronjob/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl set image cronjob/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
-          kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl set image cronjob/$CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl set image cronjob/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
+          # kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
         fi
 env:
   variables:
