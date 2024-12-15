@@ -23,6 +23,9 @@
 		},
 		{
 			"path": "../cron-jobs"
+		},
+		{
+			"path": "../scripts"
 		}
 	],
 	"settings": {}
