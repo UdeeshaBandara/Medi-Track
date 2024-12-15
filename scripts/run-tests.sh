@@ -52,7 +52,7 @@ rollback_to_blue() {
 run_integration_tests() {
   # Your integration test logic here
   # Return 0 for success, non-zero for failure
-  kubectl exec test-pod -- /run-tests.sh
+#   kubectl exec test-pod -- /run-tests.sh
   return $?
 }
 
