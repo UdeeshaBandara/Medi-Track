@@ -7,7 +7,7 @@ metadata:
     app: appointment-scheduling
     version: green
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: appointment-scheduling
@@ -31,13 +31,13 @@ spec:
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: mysql-db
-                  key: MYSQL_DATABASE
+                  name: mysql-db-appointment
+                  key: MYSQL_DATABASE_APPOINTMENT
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
-                  key: DB_USER
+                  name: mysql-username
+                  key: MYSQL_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -54,4 +54,5 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 0
+      maxUnavailable: 0        
+

@@ -7,7 +7,7 @@ metadata:
     app: medi-track-gateway
     version: green
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: medi-track-gateway
@@ -19,7 +19,7 @@ spec:
         version: green
     spec:
       containers:
-        - name: medi-track
+        - name: medi-track-gateway
           image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-gateway:<unique-tag>
           imagePullPolicy: IfNotPresent
           env:
@@ -47,11 +47,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-port
-                  key: MYSQL_PORT        
+                  key: MYSQL_PORT
           ports:
             - containerPort: 3000
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 0
+      maxUnavailable: 0        
+
