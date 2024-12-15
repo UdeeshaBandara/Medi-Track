@@ -77,7 +77,7 @@ main() {
   #   rollback_to_blue "${namespace}"
   # fi
 
-  rollback_to_blue "${namespace}"
+  switch_to_green "${namespace}"
 }
 
 main "$@"
