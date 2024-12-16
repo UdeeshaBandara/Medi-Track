@@ -13,6 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DoctorController } from './doctor/doctor.controller';
 import { DoctorService } from './doctor/doctor.service';
+import { HealthCheckController } from './health-check/health.check.controller';
 
 
 @Module({
@@ -67,7 +68,7 @@ import { DoctorService } from './doctor/doctor.service';
       },
     ]),
   ],
-  controllers: [AppController, AppointmentController, LabResultController, NotificationController,DoctorController],
+  controllers: [AppController, AppointmentController, LabResultController, NotificationController, DoctorController, HealthCheckController],
   providers: [AppService, AppointmentService, LabResultService, NotificationService, DoctorService],
 })
 export class AppModule { }
