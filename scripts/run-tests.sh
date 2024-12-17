@@ -79,21 +79,22 @@ main() {
     local deploy_type=${2:-gradual}
     local IMAGE_TAG=${3}
 
-    local NAMESPACE= "medi-track-green"
-    local MEDI_TRACK_ECR_REPOSITORY= "medi-track-gateway"
-    local MEDI_TRACK_DEPLOYMENT_NAME= "medi-track-gateway"
-    local PATIENT_RECORD_ECR_REPOSITORY= "patient-record-service"
-    local PATIENT_RECORD_DEPLOYMENT_NAME= "patient-record"
-    local APPOINTMENTS_ECR_REPOSITORY= "appointment-scheduling"
-    local APPOINTMENTS_DEPLOYMENT_NAME= "appointment-scheduling"
-    local NOTIFICATION_ECR_REPOSITORY= "notification"
-    local NOTIFICATION_DEPLOYMENT_NAME= "notification-service"
-    local FILE_HANDLER_ECR_REPOSITORY= "file-handler"
-    local FILE_HANDLER_DEPLOYMENT_NAME= "file-handler"
-    local CRON_JOBS_ECR_REPOSITORY= "medi-track-cron-jobs"
-    local CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME= "appointment-records-job"
-    local CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME= "appointments-per-doctor-job"
-    local CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME= "disease-summary-job"
+    AWS_ACCOUNT_ID="061051254585"
+    NAMESPACE="medi-track-green"
+    MEDI_TRACK_ECR_REPOSITORY="medi-track-gateway"
+    MEDI_TRACK_DEPLOYMENT_NAME="medi-track-gateway"
+    PATIENT_RECORD_ECR_REPOSITORY="patient-record-service"
+    PATIENT_RECORD_DEPLOYMENT_NAME="patient-record"
+    APPOINTMENTS_ECR_REPOSITORY="appointment-scheduling"
+    APPOINTMENTS_DEPLOYMENT_NAME="appointment-scheduling"
+    NOTIFICATION_ECR_REPOSITORY="notification"
+    NOTIFICATION_DEPLOYMENT_NAME="notification-service"
+    FILE_HANDLER_ECR_REPOSITORY="file-handler"
+    FILE_HANDLER_DEPLOYMENT_NAME="file-handler"
+    CRON_JOBS_ECR_REPOSITORY="medi-track-cron-jobs"
+    CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME="appointment-records-job"
+    CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME="appointments-per-doctor-job"
+    CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME="disease-summary-job"
 
     log "Parameters: ${target} ${deploy_type}"
 
@@ -103,7 +104,9 @@ main() {
     fi
 
     # if true then
-      kubectl set image deployment/"${MEDI_TRACK_DEPLOYMENT_NAME}"-green "${MEDI_TRACK_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${MEDI_TRACK_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+          kubectl set image deployment/"${MEDI_TRACK_DEPLOYMENT_NAME}"-green \
+        "${MEDI_TRACK_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${MEDI_TRACK_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+        -n "${NAMESPACE}"
       kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml -n "${NAMESPACE}"
       # kubectl set image deployment/"${PATIENT_RECORD_DEPLOYMENT_NAME}"-green "${PATIENT_RECORD_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${PATIENT_RECORD_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
       # kubectl apply -f k8s/blue/patient-record-green-deployment.yaml.yaml -n "${NAMESPACE}"
