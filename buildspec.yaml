@@ -15,7 +15,7 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
-      - echo "target env : $TARGET_ENV " 
+      # - echo "target env : $TARGET_ENV " 
 
   build:
     commands:
