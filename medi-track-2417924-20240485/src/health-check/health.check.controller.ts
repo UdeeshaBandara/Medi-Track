@@ -19,7 +19,7 @@ export class HealthCheckController {
     
     const patientHost = this.configService.get<string>('PATIENT_RECORD_HOST');
  
-    return { message: 'Health check is successful', config: patientHost };
+    return { message: 'Health check route', config: patientHost };
   }
 
 }

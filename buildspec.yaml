@@ -15,16 +15,16 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
-      - export ACTIVE_ENV=$(aws ssm get-parameter --name "ACTIVE_ENV" --query "Parameter.Value" --output text || echo "red")
+      - export ACTIVE_ENV=$(aws ssm get-parameter --name "ACTIVE_ENV" --query "Parameter.Value" --output text || echo "blue")
 
       # - echo "target env : $TARGET_ENV " 
 
   build:
     commands:
-      - echo $ACTIVE_ENV
-      - ./scripts/run-tests.sh $ACTIVE_ENV gradual
-      # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
-      # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+
+      # - ./scripts/run-tests.sh $ACTIVE_ENV immediate
+      - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
+      - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
       # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -f ./patient-record-service/Dockerfile ./patient-record-service
       # - docker tag $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
@@ -43,7 +43,7 @@ phases:
 
   post_build: 
     commands:
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
@@ -61,6 +61,7 @@ phases:
       #   fi
 
       # - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green;
+      # - kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml
       # - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-green -n $NAMESPACE-green;
       # - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
       # - kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-green -n $NAMESPACE-green
@@ -75,7 +76,8 @@ phases:
       # - kubectl set image cronjob/$CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
       # - kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-green $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-green
 
-      # - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue;
+      - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue;
+      - kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml
       # - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue;
       # - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       # - kubectl rollout restart deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue
