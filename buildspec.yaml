@@ -18,7 +18,8 @@ phases:
 
   build:
     commands:
-      - ./scripts/run-tests.sh $TARGET_ENV immediate
+      - echo "target env... $TARGET_ENV  "
+      - ./scripts/run-tests.sh blue immediate
       # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
