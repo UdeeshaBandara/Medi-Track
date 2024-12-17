@@ -1,7 +1,5 @@
 version: 0.2
-env:
-  variables:
-    TARGET_ENV: ${TARGET_ENV}
+
 phases:
   pre_build:
     commands: 
@@ -91,6 +89,7 @@ phases:
       # - kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
 env:
   variables:
+    TARGET_ENV: ${TARGET_ENV}
     AWS_ACCOUNT_ID: "061051254585"
     AWS_DEFAULT_REGION: "us-east-1"
     CLUSTER_NAME: "health-sync"
