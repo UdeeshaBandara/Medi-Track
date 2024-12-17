@@ -31,7 +31,7 @@ update_ingress() {
 
     # Update Blue Namespace Ingress
     log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE}"
-    kubectl patch ingress medi-track -n "${BLUE_NAMESPACE}" -p "{
+    kubectl patch ingress health-sync -n "${BLUE_NAMESPACE}" -p "{
         \"metadata\": {
             \"annotations\": {
                 \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
@@ -46,7 +46,7 @@ update_ingress() {
 
     # Update Green Namespace Ingress
     log "Updating Green Ingress in namespace: ${GREEN_NAMESPACE}"
-    kubectl patch ingress medi-track -n "${GREEN_NAMESPACE}" -p "{
+    kubectl patch ingress health-sync -n "${GREEN_NAMESPACE}" -p "{
         \"metadata\": {
             \"annotations\": {
                 \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
