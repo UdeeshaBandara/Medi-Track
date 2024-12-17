@@ -63,12 +63,12 @@ EOF
 EOF
 )
       # Update Blue Namespace Ingress
-    log "Updating Blue Ingress in namespace: ${blue_namespace}"
-    kubectl patch ingress medi-track -n "${blue_namespace}" -p "${blue_patch}" --type=merge
+    log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE}"
+    kubectl patch ingress health-sync -n "${BLUE_NAMESPACE}" -p "${blue_patch}" --type=merge
 
     # Update Green Namespace Ingress
-    log "Updating Green Ingress in namespace: ${green_namespace}"
-    kubectl patch ingress medi-track -n "${green_namespace}" -p "${green_patch}" --type=merge
+    log "Updating Green Ingress in namespace: ${GREEN_NAMESPACE}"
+    kubectl patch ingress health-sync -n "${GREEN_NAMESPACE}" -p "${green_patch}" --type=merge
 
 }
 
