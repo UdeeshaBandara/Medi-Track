@@ -10,10 +10,11 @@ log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
 }
 
-# Update Ingress configuration with dynamic group order
+# Update Ingress configuration
 update_ingress() {
-    local target_deploy=$1
-    local deploy_type=$2
+    local blue_weight=$1
+    local green_weight=$2
+    local target_deploy=$3
 
     if [[ "${target_deploy}" == "blue" ]]; then
         blue_order=0
@@ -27,8 +28,8 @@ update_ingress() {
     fi
 
     # Update Blue Namespace Ingress
-    log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE} with group.order: ${blue_order}"
-    kubectl patch ingress health-sync -n "${BLUE_NAMESPACE}" -p "{
+    log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE}"
+    kubectl patch ingress medi-track -n "${BLUE_NAMESPACE}" -p "{
         \"metadata\": {
             \"annotations\": {
                 \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
@@ -42,8 +43,8 @@ update_ingress() {
     }"
 
     # Update Green Namespace Ingress
-    log "Updating Green Ingress in namespace: ${GREEN_NAMESPACE} with group.order: ${green_order}"
-    kubectl patch ingress health-sync -n "${GREEN_NAMESPACE}" -p "{
+    log "Updating Green Ingress in namespace: ${GREEN_NAMESPACE}"
+    kubectl patch ingress medi-track -n "${GREEN_NAMESPACE}" -p "{
         \"metadata\": {
             \"annotations\": {
                 \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
@@ -57,29 +58,39 @@ update_ingress() {
     }"
 }
 
-# Main function to switch deployment
+# Main function to manage traffic shifting
 main() {
+
     local target=${1}
-    local deploy_type=${2}
+    local deploy_type=${2:-gradual}
 
     if [[ -z "${target}" || -z "${deploy_type}" ]]; then
         log "Missing arguments. Usage: ./script.sh <blue|green> <immediate|rollback>."
         exit 1
     fi
 
-    log "Deployment target: ${target}, Deployment type: ${deploy_type}"
-
     case "${deploy_type}" in
-        immediate)
-            log "Performing immediate switch."
-            update_ingress "${target}" "${deploy_type}"
+        "immediate")
+            log "Immediate switch to Green"
+            update_ingress 0 100 target
             ;;
-        rollback)
-            log "Performing rollback."
-            update_ingress "${target}" "${deploy_type}"
+        "rollback")
+            log "Rollback to Blue"
+            update_ingress 100 0 target
+            ;;
+        "gradual")
+            log "Starting gradual traffic shift"
+            # Gradual shift steps
+            update_ingress 90 10 target
+            sleep 60
+            update_ingress 50 50 target
+            sleep 60
+            update_ingress 10 90 target
+            sleep 60
+            update_ingress 0 100 target
             ;;
         *)
-            log "Invalid deployment type. Use 'immediate' or 'rollback'."
+            log "Invalid deploy type. Use 'immediate', 'rollback', or 'gradual'."
             exit 1
             ;;
     esac
