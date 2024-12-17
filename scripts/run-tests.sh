@@ -16,7 +16,6 @@ update_ingress() {
     local green_weight=$2
     local target_deploy=${3}
 
-    log "target_deploy: ${target_deploy}"
 
     if [[ "${target_deploy}" == "blue" ]]; then
         blue_order=0
@@ -28,6 +27,14 @@ update_ingress() {
         log "Invalid target deployment. Use 'blue' or 'green'."
         exit 1
     fi
+
+    log "INGRESS_GROUP_NAME: ${INGRESS_GROUP_NAME}"
+    log "BLUE_NAMESPACE: ${BLUE_NAMESPACE}"
+    log "blue_order: ${blue_order}"
+    log "blue_weight: ${blue_weight}"
+    log "GREEN_NAMESPACE: ${GREEN_NAMESPACE}"
+    log "green_order: ${green_order}"
+    log "green_weight: ${green_weight}"
 
     # Update Blue Namespace Ingress
     log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE}"
