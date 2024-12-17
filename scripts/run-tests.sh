@@ -14,7 +14,7 @@ log() {
 update_ingress() {
     local blue_weight=$1
     local green_weight=$2
-    local target_deploy=$3
+    local target_deploy=${3}
 
     log "target_deploy: ${target_deploy}"
 
