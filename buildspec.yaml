@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  variables:
+    TARGET_ENV: ${TARGET_ENV}
 phases:
   pre_build:
     commands: 
