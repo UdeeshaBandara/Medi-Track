@@ -2,14 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: health-sync
-  namespace: medi-track-blue
+  namespace: medi-track-green
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     kubernetes.io/ingress.class: alb
     # alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=30
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: shared-ingress-group
-    alb.ingress.kubernetes.io/group.order: '0'
+    alb.ingress.kubernetes.io/group.order: '10'
     alb.ingress.kubernetes.io/weighted-target-groups: >-
       [
         {"serviceName": "medi-track-gateway-blue", "servicePort": 3000, "weight": 0},
@@ -23,6 +23,7 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: medi-track-gateway-blue
+              name: medi-track-gateway-green
               port:
                 number: 3000
+

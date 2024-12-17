@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    # This section maps IAM roles to Kubernetes RBAC groups
+    - rolearn: arn:aws:iam::061051254585:role/codebuild-role
+      username: codebuild-role
+      groups:
+        - eks-deploy-group
+
+  mapUsers: |
+    # This section maps IAM users to Kubernetes RBAC groups
+    - userarn: arn:aws:iam::061051254585:user/kubectl-user
+      username: kubectl-user
+      groups:
+        - system:masters
+
+  mapAccounts: |
+    # This section allows full access to EKS from specific AWS accounts
+    - 061051254585
