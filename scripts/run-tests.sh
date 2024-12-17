@@ -103,23 +103,23 @@ main() {
     fi
 
     # if true then
-      - kubectl set image deployment/"${MEDI_TRACK_DEPLOYMENT_NAME}"-green "${MEDI_TRACK_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${MEDI_TRACK_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      - kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml -n "${NAMESPACE}"
-      # - kubectl set image deployment/"${PATIENT_RECORD_DEPLOYMENT_NAME}"-green "${PATIENT_RECORD_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${PATIENT_RECORD_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/patient-record-green-deployment.yaml.yaml -n "${NAMESPACE}"
-      # - kubectl set image deployment/"${APPOINTMENTS_DEPLOYMENT_NAME}"-green "${APPOINTMENTS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${APPOINTMENTS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/appointment-scheduling-green-deployment.yaml -n "${NAMESPACE}"
-      # - kubectl set image deployment/"${NOTIFICATION_DEPLOYMENT_NAME}"-green "${NOTIFICATION_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${NOTIFICATION_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/notification-service-green-deployment.yaml -n "${NAMESPACE}"
-      # - kubectl set image deployment/"${FILE_HANDLER_DEPLOYMENT_NAME}"-green "${FILE_HANDLER_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${FILE_HANDLER_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # -kubectl apply -f k8s/blue/file-handler-green-deployment.yaml -n "${NAMESPACE}"
+      kubectl set image deployment/"${MEDI_TRACK_DEPLOYMENT_NAME}"-green "${MEDI_TRACK_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${MEDI_TRACK_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml -n "${NAMESPACE}"
+      # kubectl set image deployment/"${PATIENT_RECORD_DEPLOYMENT_NAME}"-green "${PATIENT_RECORD_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${PATIENT_RECORD_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/patient-record-green-deployment.yaml.yaml -n "${NAMESPACE}"
+      # kubectl set image deployment/"${APPOINTMENTS_DEPLOYMENT_NAME}"-green "${APPOINTMENTS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${APPOINTMENTS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/appointment-scheduling-green-deployment.yaml -n "${NAMESPACE}"
+      # kubectl set image deployment/"${NOTIFICATION_DEPLOYMENT_NAME}"-green "${NOTIFICATION_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${NOTIFICATION_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/notification-service-green-deployment.yaml -n "${NAMESPACE}"
+      # kubectl set image deployment/"${FILE_HANDLER_DEPLOYMENT_NAME}"-green "${FILE_HANDLER_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${FILE_HANDLER_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/file-handler-green-deployment.yaml -n "${NAMESPACE}"
 
-      # - kubectl set image cronjob/"${CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/appointment-records-cron-green.yaml -n "${NAMESPACE}"
-      # - kubectl set image cronjob/"${CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/appointments-per-doctor-cron-green.yaml -n "${NAMESPACE}"
-      # - kubectl set image cronjob/"${CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
-      # - kubectl apply -f k8s/blue/disease-summary-cron-green.yaml -n "${NAMESPACE}"
+      # kubectl set image cronjob/"${CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/appointment-records-cron-green.yaml -n "${NAMESPACE}"
+      # kubectl set image cronjob/"${CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/appointments-per-doctor-cron-green.yaml -n "${NAMESPACE}"
+      # kubectl set image cronjob/"${CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME}"-green "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" -n "${NAMESPACE}"
+      # kubectl apply -f k8s/blue/disease-summary-cron-green.yaml -n "${NAMESPACE}"
 
 
     # fi
