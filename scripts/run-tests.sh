@@ -16,6 +16,8 @@ update_ingress() {
     local green_weight=$2
     local target_deploy=$3
 
+    log "target_deploy: ${target_deploy}"
+
     if [[ "${target_deploy}" == "blue" ]]; then
         blue_order=0
         green_order=10
@@ -63,6 +65,8 @@ main() {
 
     local target=${1}
     local deploy_type=${2:-gradual}
+
+    log "Parameters: ${target} ${deploy_type}"
 
     if [[ -z "${target}" || -z "${deploy_type}" ]]; then
         log "Missing arguments. Usage: ./script.sh <blue|green> <immediate|rollback>."
