@@ -93,7 +93,7 @@ env:
     AWS_DEFAULT_REGION: "us-east-1"
     CLUSTER_NAME: "health-sync"
     NAMESPACE: "medi-track"
-    TARGET_ENV: ${TARGET_ENV}
+    TARGET_ENV: $TARGET_ENV
     MEDI_TRACK_ECR_REPOSITORY: "medi-track-gateway"
     MEDI_TRACK_DEPLOYMENT_NAME: "medi-track-gateway"
     PATIENT_RECORD_ECR_REPOSITORY: "patient-record-service"
