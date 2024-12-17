@@ -76,22 +76,22 @@ main() {
     case "${deploy_type}" in
         "immediate")
             log "Immediate switch to Green"
-            update_ingress 0 100 target
+            update_ingress 0 100 "${target}"
             ;;
         "rollback")
             log "Rollback to Blue"
-            update_ingress 100 0 target
+            update_ingress 100 0 "${target}"
             ;;
         "gradual")
             log "Starting gradual traffic shift"
             # Gradual shift steps
-            update_ingress 90 10 target
+            update_ingress 90 10 "${target}"
             sleep 60
-            update_ingress 50 50 target
+            update_ingress 50 50 "${target}"
             sleep 60
-            update_ingress 10 90 target
+            update_ingress 10 90 "${target}"
             sleep 60
-            update_ingress 0 100 target
+            update_ingress 0 100 "${target}"
             ;;
         *)
             log "Invalid deploy type. Use 'immediate', 'rollback', or 'gradual'."
