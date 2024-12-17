@@ -15,11 +15,12 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
+      - echo "target env : $TARGET_ENV " 
 
   build:
     commands:
-      - echo "target env... : $TARGET_ENV " 
-      - ./scripts/run-tests.sh blue immediate
+      
+      - ./scripts/run-tests.sh green immediate
       # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
