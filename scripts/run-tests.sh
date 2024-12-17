@@ -36,35 +36,40 @@ update_ingress() {
     log "green_order: ${green_order}"
     log "green_weight: ${green_weight}"
 
-    # Update Blue Namespace Ingress
-    log "Updating Blue Ingress in namespace: ${BLUE_NAMESPACE}"
-    kubectl patch ingress health-sync -n "${BLUE_NAMESPACE}" -p "{
-        \"metadata\": {
-            \"annotations\": {
-                \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
-                \"alb.ingress.kubernetes.io/group.order\": \"${blue_order}\",
-                \"alb.ingress.kubernetes.io/weighted-target-groups\": \"[
-                    {\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},
-                    {\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}
-                ]\"
-            }
+       # Create compact JSON patch
+    local blue_patch=$(cat <<EOF
+{
+    "metadata": {
+        "annotations": {
+            "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
+            "alb.ingress.kubernetes.io/group.order": "${blue_group_order}",
+            "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
-    }"
+    }
+}
+EOF
+)
+
+    local green_patch=$(cat <<EOF
+{
+    "metadata": {
+        "annotations": {
+            "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
+            "alb.ingress.kubernetes.io/group.order": "${green_group_order}",
+            "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
+        }
+    }
+}
+EOF
+)
+      # Update Blue Namespace Ingress
+    log "Updating Blue Ingress in namespace: ${blue_namespace}"
+    kubectl patch ingress medi-track -n "${blue_namespace}" -p "${blue_patch}" --type=merge
 
     # Update Green Namespace Ingress
-    log "Updating Green Ingress in namespace: ${GREEN_NAMESPACE}"
-    kubectl patch ingress health-sync -n "${GREEN_NAMESPACE}" -p "{
-        \"metadata\": {
-            \"annotations\": {
-                \"alb.ingress.kubernetes.io/group.name\": \"${INGRESS_GROUP_NAME}\",
-                \"alb.ingress.kubernetes.io/group.order\": \"${green_order}\",
-                \"alb.ingress.kubernetes.io/weighted-target-groups\": \"[
-                    {\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},
-                    {\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}
-                ]\"
-            }
-        }
-    }"
+    log "Updating Green Ingress in namespace: ${green_namespace}"
+    kubectl patch ingress medi-track -n "${green_namespace}" -p "${green_patch}" --type=merge
+
 }
 
 # Main function to manage traffic shifting
