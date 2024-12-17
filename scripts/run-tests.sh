@@ -42,7 +42,7 @@ update_ingress() {
     "metadata": {
         "annotations": {
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
-            "alb.ingress.kubernetes.io/group.order": "${blue_group_order}",
+            "alb.ingress.kubernetes.io/group.order": "${blue_order}",
             "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
@@ -55,7 +55,7 @@ EOF
     "metadata": {
         "annotations": {
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
-            "alb.ingress.kubernetes.io/group.order": "${green_group_order}",
+            "alb.ingress.kubernetes.io/group.order": "${green_order}",
             "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
