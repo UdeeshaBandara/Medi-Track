@@ -49,9 +49,7 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
-      
-      - cd medi-track-2417924-20240485
-      - npm install
+
 
       # - echo "target env : $TARGET_ENV " 
 
@@ -92,7 +90,7 @@ phases:
       - kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml  -n $NAMESPACE-blue 
       - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       - kubectl apply -f k8s/blue/patient-record-blue-deployment.yaml.yaml  -n $NAMESPACE-blue
-      
+
       - docker run  -e  DB_HOST=$DB_HOST -e DB_NAME=$DB_NAME -e DB_PASSWORD=$DB_PASSWORD -e DB_PORT=$DB_PORT -e DB_USER=$DB_USER  -e PATIENT_RECORD_HOST=patient-record-blue --rm $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG npm run test:e2e
       # - kubectl set image deployment/$APPOINTMENTS_DEPLOYMENT_NAME-blue $APPOINTMENTS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       # - kubectl apply -f k8s/blue/appointment-scheduling-blue-deployment.yaml  -n $NAMESPACE-blue
