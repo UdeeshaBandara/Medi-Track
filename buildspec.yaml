@@ -108,7 +108,7 @@ phases:
 
       # - ./scripts/run-tests.sh green immediate $IMAGE_TAG
       # - ./scripts/run-tests.sh $ACTIVE_ENV immediate $IMAGE_TAG
-      - ./integration-test.sh
+      - ./scripts/integration-test.sh
       - |
         if [ $? -eq 0 ]; then
           echo "Integration tests passed, proceeding with deployment"
@@ -117,8 +117,5 @@ phases:
           exit 1
         fi
 
-artifacts:
-  files:
-    - '**/*'
-  base-directory: 'dist'
+
 
