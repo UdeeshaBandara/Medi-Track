@@ -16,13 +16,16 @@ phases:
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
       - export ACTIVE_ENV=$(aws ssm get-parameter --name "ACTIVE_ENV" --query "Parameter.Value" --output text || echo "blue")
+      - cd medi-track-2417924-20240485
+      - npm install
 
       # - echo "target env : $TARGET_ENV " 
 
   build:
     commands:
-      - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
-      - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+      - npm run test -- --config=jest.config.js
+      # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
+      # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
       # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -f ./patient-record-service/Dockerfile ./patient-record-service
       # - docker tag $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
@@ -41,7 +44,7 @@ phases:
 
   post_build: 
     commands:
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
@@ -67,7 +70,7 @@ phases:
       # - kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       # - kubectl apply -f k8s/blue/disease-summary-cron-blue.yaml -n $NAMESPACE-blue
 
-      - ./scripts/run-tests.sh green immediate $IMAGE_TAG
+      # - ./scripts/run-tests.sh green immediate $IMAGE_TAG
       # - ./scripts/run-tests.sh $ACTIVE_ENV immediate $IMAGE_TAG
 
 env:
