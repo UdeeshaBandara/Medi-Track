@@ -21,6 +21,11 @@ env:
     CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME: "appointments-per-doctor-job"
     CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME: "disease-summary-job"
   parameter-store:
+    DB_HOST: "DB_HOST"
+    DB_NAME: "DB_NAME"
+    DB_PASSWORD: "DB_PASSWORD"
+    DB_PORT: "DB_PORT"
+    DB_USER: "DB_USER"
     APPOINTMENTS_HOST: "APPOINTMENTS_HOST"
     NOTIFICATIONS_HOST: "NOTIFICATIONS_HOST"
     PATIENT_RECORD_HOST: "PATIENT_RECORD_HOST"
@@ -44,11 +49,6 @@ phases:
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
       - export ACTIVE_ENV=$(aws ssm get-parameter --name "ACTIVE_ENV" --query "Parameter.Value" --output text || echo "blue")
-      - export DB_HOST=$(aws ssm get-parameter --name "DB_HOST" --query "Parameter.Value" --output text || echo "blue")
-      - export DB_NAME=$(aws ssm get-parameter --name "DB_NAME" --query "Parameter.Value" --output text || echo "blue")
-      - export DB_PASSWORD=$(aws ssm get-parameter --name "DB_PASSWORD" --query "Parameter.Value" --output text || echo "blue")
-      - export DB_PORT=$(aws ssm get-parameter --name "DB_PORT" --query "Parameter.Value" --output text || echo "blue")
-      - export DB_USER=$(aws ssm get-parameter --name "DB_USER" --query "Parameter.Value" --output text || echo "blue")
       - cd medi-track-2417924-20240485
       - npm install
 
