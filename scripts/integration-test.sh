@@ -2,8 +2,8 @@
 
 # Service endpoints
 GATEWAY_URL="http://k8s-sharedingressgrou-77bb4809e7-1430318718.us-east-1.elb.amazonaws.com"
-INTERNAL_SERVICE="internal-service"
-NAMESPACE="your-namespace"
+INTERNAL_SERVICE="patient-record-blue"
+NAMESPACE="medi-track-bluee"
 
 echo "Starting simple service communication test..."
 
