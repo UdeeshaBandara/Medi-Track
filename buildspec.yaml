@@ -26,6 +26,7 @@ phases:
 
   build:
     commands:
+      - echo $APPOINTMENTS_HOST
       - npm run test -- --config=jest-e2e.json
       # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
@@ -96,3 +97,13 @@ env:
     CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME: "appointment-records-job"
     CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME: "appointments-per-doctor-job"
     CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME: "disease-summary-job"
+  parameter-store:
+    DB_HOST: "DB_HOST"
+    DB_NAME: "DB_NAME"
+    DB_PASSWORD: "DB_PASSWORD"
+    DB_PORT: "DB_PORT"
+    DB_USER: "DB_USER"
+    APPOINTMENTS_HOST: "APPOINTMENTS_HOST"
+    NOTIFICATIONS_HOST: "NOTIFICATIONS_HOST"
+    PATIENT_RECORD_HOST: "PATIENT_RECORD_HOST"
+    UPLOADER_HOST: "UPLOADER_HOST"
