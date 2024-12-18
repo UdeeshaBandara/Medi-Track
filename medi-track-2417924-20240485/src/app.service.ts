@@ -3,6 +3,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { CreatePatientRequest } from './create-patient-request.dto';
 import { FileUploadEvent } from './file-upload.event';
 import { Logger } from '@nestjs/common';
+import { firstValueFrom } from 'rxjs';
+
 @Injectable()
 export class AppService {
 
@@ -62,11 +64,11 @@ export class AppService {
   }
 
   async checkTCPConnection() {
-    return await this.patientRecordClient.send(
+    return await firstValueFrom(this.patientRecordClient.send(
       'tcp_check',
       {}
-    );
+    ));
   }
- 
+
 
 }
