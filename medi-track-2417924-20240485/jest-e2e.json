@@ -1,6 +1,6 @@
 {
   "moduleFileExtensions": ["js", "json", "ts","node"],
-  "rootDir": ".src",
+  "rootDir": "./medi-track-2417924-20240485/src",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
