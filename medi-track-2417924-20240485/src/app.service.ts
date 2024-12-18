@@ -67,7 +67,7 @@ export class AppService {
       'tcp_check',
       {}
     )
-    return await firstValueFrom(observable);
+    return await observable.toPromise();
   }
  
 
