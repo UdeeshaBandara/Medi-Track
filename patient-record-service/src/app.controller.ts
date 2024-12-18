@@ -12,9 +12,9 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  handleUserCreated(data: CreatePatientEvent) {
+  @MessagePattern('tcp_check')
+  checkTCPConnection() {
 
-    console.log('wwowwoowo :');
-     this.appService.handleUserCreated(data);
+    return 'Healthy';
   }
 }

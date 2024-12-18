@@ -60,6 +60,13 @@ export class AppService {
       new FileUploadEvent(fileName, file)
     );
   }
+
+  async checkTCPConnection() {
+    return await this.patientRecordClient.send(
+      'tcp_check',
+      {}
+    );
+  }
  
 
 }
