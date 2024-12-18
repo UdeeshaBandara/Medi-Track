@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { AuthModule } from './auth/auth.module';
@@ -11,7 +11,7 @@ describe('AppController (e2e)', () => {
   let appService: AppService;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule, AuthModule,
         ClientsModule.registerAsync([
           {
@@ -62,9 +62,9 @@ describe('AppController (e2e)', () => {
       providers: [AppService],
     }).compile();
 
-    app = moduleRef.createNestApplication();
-    await app.init();
-    appService = moduleRef.get<AppService>(AppService);
+    // app = moduleRef.createNestApplication();
+    // await app.init();
+    appService = module.get<AppService>(AppService);
   });
 
   it('should check connection to the microservice', async () => {
