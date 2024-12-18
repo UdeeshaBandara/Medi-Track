@@ -64,10 +64,10 @@ export class AppService {
   }
 
   async checkTCPConnection() {
-    return await firstValueFrom(this.patientRecordClient.send(
+    return await this.patientRecordClient.send(
       'tcp_check',
       {}
-    ));
+    );
   }
 
 

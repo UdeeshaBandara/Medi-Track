@@ -73,9 +73,9 @@ describe('AppController (e2e)', () => {
     expect(response).toBe('Healthy');
   });
 
-  afterAll(async () => {
-    await app.close();
-  });
+  // afterAll(async () => {
+  //   await app.close();
+  // });
 
 
 });
