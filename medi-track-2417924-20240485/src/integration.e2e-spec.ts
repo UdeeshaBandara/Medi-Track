@@ -24,6 +24,39 @@ describe('AppController (e2e)', () => {
               },
             }),
             inject: [ConfigService],
+          },
+          {
+            name: 'UPLOADER',
+            useFactory: (configService: ConfigService) => ({
+              transport: Transport.TCP,
+              options: {
+                host: configService.get<string>('UPLOADER_HOST', 'file-handler-blue'),
+                port: 4001
+              },
+            }),
+            inject: [ConfigService],
+          },
+          {
+            name: 'APPOINTMENTS',
+            useFactory: (configService: ConfigService) => ({
+              transport: Transport.TCP,
+              options: {
+                host: configService.get<string>('APPOINTMENTS_HOST', 'appointment-scheduling-blue'),
+                port: 4002
+              },
+            }),
+            inject: [ConfigService],
+          },
+          {
+            name: 'NOTIFICATIONS',
+            useFactory: (configService: ConfigService) => ({
+              transport: Transport.TCP,
+              options: {
+                host: configService.get<string>('NOTIFICATIONS_HOST', 'notification-service-blue'),
+                port: 4003
+              },
+            }),
+            inject: [ConfigService],
           }
         ])],
       providers: [AppService],
