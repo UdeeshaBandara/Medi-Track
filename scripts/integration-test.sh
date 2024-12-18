@@ -42,7 +42,7 @@ perform_test() {
             else
                 # If running outside cluster (e.g., during build), use kubectl port-forward
                 port_forward_pid=""
-                kubectl port-forward -n "${NAMESPACE}" "service/${INTERNAL_SERVICE}" 8080:4000 &
+                kubectl port-forward -n "${NAMESPACE}" "service/${INTERNAL_SERVICE}" 4000:4000 &
                 port_forward_pid=$!
                 sleep 2  # Wait for port-forward to establish
                 
