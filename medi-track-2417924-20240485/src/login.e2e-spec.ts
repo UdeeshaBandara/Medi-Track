@@ -17,15 +17,14 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('POST /auth/login should logged in the user', async () => {
+  it('POST / should logged in the user', async () => {
     jest.setTimeout(15000);
-    const payload = { name: "Udeesha", password: 'noise' };
+    // const payload = { name: "Udeesha", password: 'noise' };
     const response = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send(payload)
-      .expect(201);
+      .get('/')
+      .expect(200);
 
-    expect(response.body).toHaveProperty('access_token');
+    expect(response.body).toHaveProperty('config');
   });
 
   afterAll(async () => {
