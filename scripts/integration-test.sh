@@ -46,7 +46,7 @@ perform_test() {
                 port_forward_pid=$!
                 sleep 2  # Wait for port-forward to establish
                 
-                internal_response=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/ping" || echo "failed")
+                internal_response=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:4000" || echo "failed")
                 
                 # Clean up port-forward
                 if [ -n "$port_forward_pid" ]; then
