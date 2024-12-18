@@ -49,9 +49,6 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
-      
-      - cd medi-track-2417924-20240485
-      - npm install
 
       # - echo "target env : $TARGET_ENV " 
 
