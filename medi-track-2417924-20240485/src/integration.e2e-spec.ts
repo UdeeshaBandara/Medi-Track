@@ -3,16 +3,21 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { AuthModule } from './auth/auth.module';
 import { AppService } from './app.service';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AppController } from './app.controller';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let appService: AppService;
+  let module: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, AuthModule,
+    module = await Test.createTestingModule({
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        AppModule, 
+        AuthModule,
         ClientsModule.registerAsync([
           {
             name: 'PATIENTRECORD',
@@ -59,6 +64,7 @@ describe('AppController (e2e)', () => {
             inject: [ConfigService],
           }
         ])],
+      controllers: [AppController],
       providers: [AppService],
     }).compile();
 
@@ -73,9 +79,9 @@ describe('AppController (e2e)', () => {
     expect(response).toBe('Healthy');
   });
 
-  // afterAll(async () => {
-  //   await app.close();
-  // });
+  afterAll(async () => {
+    await module.close();
+  });
 
 
 });
