@@ -69,6 +69,7 @@ describe('AppController (e2e)', () => {
 
   it('should check connection to the microservice', async () => {
     const response = await appService.checkTCPConnection();
+    console.log('response :', response);
     expect(response).toBe('Healthy');
   });
 
