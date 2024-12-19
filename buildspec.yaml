@@ -85,7 +85,7 @@ phases:
 
     
       - kubectl set image deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
-      - kubectl apply -f k8s/blue/medi-track-gateway-blue-deployment.yaml  -n $NAMESPACE-blue 
+      - kubectl rollout restart deployment/$MEDI_TRACK_DEPLOYMENT_NAME-blue -n $NAMESPACE-blue;
       # - kubectl set image deployment/$PATIENT_RECORD_DEPLOYMENT_NAME-blue $PATIENT_RECORD_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       # - kubectl apply -f k8s/blue/patient-record-blue-deployment.yaml  -n $NAMESPACE-blue
 
