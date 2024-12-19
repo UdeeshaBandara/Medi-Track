@@ -51,17 +51,17 @@ phases:
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - chmod +x scripts/run-tests.sh
-      - chmod +x scripts/integration-test.sh
+      # - chmod +x scripts/integration-test.sh
 
 
       # - echo "target env : $TARGET_ENV " 
 
   build:
     commands:
-      - TEST_USER_NAME=$TEST_USER_NAME TEST_USER_PASSWORD=$TEST_USER_PASSWORD DB_HOST=$DB_HOST DB_NAME=$DB_NAME DB_PASSWORD=$DB_PASSWORD DB_PORT=$DB_PORT DB_USER=$DB_USER npm run test -- --config=jest-e2e.json
+      # - TEST_USER_NAME=$TEST_USER_NAME TEST_USER_PASSWORD=$TEST_USER_PASSWORD DB_HOST=$DB_HOST DB_NAME=$DB_NAME DB_PASSWORD=$DB_PASSWORD DB_PORT=$DB_PORT DB_USER=$DB_USER npm run test -- --config=jest-e2e.json
 
-      # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
-      # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+      - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
+      - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
 
       # - docker build -t $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG -f ./patient-record-service/Dockerfile ./patient-record-service
       # - docker tag $PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
@@ -80,7 +80,7 @@ phases:
 
   post_build: 
     commands:
-      # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$APPOINTMENTS_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$PATIENT_RECORD_ECR_REPOSITORY:$IMAGE_TAG
       # - docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$FILE_HANDLER_ECR_REPOSITORY:$IMAGE_TAG
@@ -108,6 +108,7 @@ phases:
       # - kubectl set image cronjob/$CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME-blue $CRON_JOBS_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$CRON_JOBS_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
       # - kubectl apply -f k8s/blue/disease-summary-cron-blue.yaml -n $NAMESPACE-blue
 
+      -  docker run -e TEST_USER_NAME=$TEST_USER_NAME -e TEST_USER_PASSWORD=$TEST_USER_PASSWORD  -e  DB_HOST=$DB_HOST -e DB_NAME=$DB_NAME -e DB_PASSWORD=$DB_PASSWORD -e DB_PORT=$DB_PORT -e DB_USER=$DB_USER  -e PATIENT_RECORD_HOST=patient-record-blue --rm $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG npm run test:e2e
       # - ./scripts/run-tests.sh green immediate $IMAGE_TAG
       # - ./scripts/run-tests.sh $ACTIVE_ENV immediate $IMAGE_TAG
       
