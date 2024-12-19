@@ -12,7 +12,7 @@ spec:
           containers:
             - name: medi-track-cron-jobs
               image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/medi-track-cron-jobs:<unique-tag>
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               command: ["node", "dist/appointment-records.job.js"]
               env:
                 - name: REDSHIFT_USER

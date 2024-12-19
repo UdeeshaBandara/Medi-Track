@@ -21,7 +21,7 @@ spec:
       containers:
         - name: notification
           image: 061051254585.dkr.ecr.us-east-1.amazonaws.com/notification:<unique-tag>
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: DB_HOST
               valueFrom:
