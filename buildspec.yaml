@@ -111,7 +111,8 @@ phases:
       - kubectl set image cronjob/$CRON_JOBS_INTEGRATION_TEST $MEDI_TRACK_ECR_REPOSITORY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -n $NAMESPACE-blue
      
       # Running test cases
-      -  docker run --rm \
+      - |
+          docker run --rm \
           -e TEST_USER_NAME="$TEST_USER_NAME" \
           -e TEST_USER_PASSWORD="$TEST_USER_PASSWORD" \
           -e DB_HOST="$DB_HOST" \
