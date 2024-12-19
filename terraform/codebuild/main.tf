@@ -56,17 +56,17 @@ resource "aws_iam_policy" "eks_kubectl_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid       = "EKSAccess"
-        Effect    = "Allow"
-        Action    = [
+        Sid    = "EKSAccess"
+        Effect = "Allow"
+        Action = [
           "eks:DescribeCluster",
         ]
-        Resource = "arn:aws:eks:us-east-1:061051254585:cluster/medi-track"
+        Resource = "*"
       },
       {
-        Sid       = "KubernetesActions"
-        Effect    = "Allow"
-        Action    = [
+        Sid    = "KubernetesActions"
+        Effect = "Allow"
+        Action = [
           "eks:AssumeRoleWithWebIdentity"
         ]
         Resource = "*"
@@ -86,33 +86,15 @@ resource "aws_iam_policy" "eks_access_policy" {
       {
         Effect = "Allow"
         Action = [
-          "eks:DescribeCluster"
-        ]
-        Resource = "arn:aws:eks:us-east-1:061051254585:cluster/medi-track"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "eks:DescribeCluster",
-          "eks:ListClusters"
+          "secretsmanager:*",
+          "s3:*",
+          "logs:*",
+          "iam:*",
+          "eks:*",
+          "ecr:*",
+          "codebuild:*",
         ]
         Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeVpcs"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "sts:AssumeRole"
-        ]
-        Resource = "arn:aws:iam::061051254585:role/ng-1"
       }
     ]
   })
@@ -203,3 +185,64 @@ resource "aws_codebuild_source_credential" "github" {
   server_type = "GITHUB"
   token       = aws_secretsmanager_secret_version.github_token_version.secret_string
 }
+
+resource "aws_iam_role_policy" "codebuild_policy" {
+  name = "codebuild-k8s-deploy-policy"
+  role = "codebuild-role"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:UpdateClusterConfig",
+          "eks:UpdateClusterVersion",
+          "eks:ListClusters",
+          "eks:DescribeNodegroup",
+          "eks:ListNodegroups"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "iam:ListRolePolicies",
+          "iam:GetRolePolicy",
+          "iam:GetRole"
+        ]
+        Resource = "arn:aws:iam::*:role/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:DescribeInstances",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeInternetGateways"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ]
+        Resource = "arn:aws:ecr:region:account-id:repository/repository-name"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:UpdateKubeconfig"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+

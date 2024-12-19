@@ -7,6 +7,7 @@ variable "github_token" {
 resource "aws_codepipeline" "codepipeline" {
   name     = "medi-track-pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
+  pipeline_type  = "V2"
 
   # creating S3 bucket to store build artifacts
   artifact_store {
@@ -50,6 +51,10 @@ resource "aws_codepipeline" "codepipeline" {
         ProjectName = "medi-track-build-project"
       }
     }
+  }
+  variable {
+    default_value = "green"
+    name          = "TARGET_ENV"
   }
 }
 

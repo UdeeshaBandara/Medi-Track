@@ -27,6 +27,8 @@ env:
     DB_PASSWORD: "DB_PASSWORD"
     DB_PORT: "DB_PORT"
     DB_USER: "DB_USER"
+    TEST_USER_PASSWORD: "TEST_USER_PASSWORD"
+    TEST_USER_NAME: "TEST_USER_NAME"
     APPOINTMENTS_HOST: "APPOINTMENTS_HOST"
     NOTIFICATIONS_HOST: "NOTIFICATIONS_HOST"
     PATIENT_RECORD_HOST: "PATIENT_RECORD_HOST"
@@ -56,7 +58,7 @@ phases:
 
   build:
     commands:
-      # - DB_HOST=$DB_HOST DB_NAME=$DB_NAME DB_PASSWORD=$DB_PASSWORD DB_PORT=$DB_PORT DB_USER=$DB_USER npm run test -- --config=jest-e2e.json
+      - TEST_USER_NAME=$TEST_USER_NAME TEST_USER_PASSWORD=$TEST_USER_PASSWORD DB_HOST=$DB_HOST DB_NAME=$DB_NAME DB_PASSWORD=$DB_PASSWORD DB_PORT=$DB_PORT DB_USER=$DB_USER npm run test -- --config=jest-e2e.json
 
       # - docker build -t $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG -f ./medi-track-2417924-20240485/Dockerfile ./medi-track-2417924-20240485
       # - docker tag $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG
@@ -108,14 +110,7 @@ phases:
 
       # - ./scripts/run-tests.sh green immediate $IMAGE_TAG
       # - ./scripts/run-tests.sh $ACTIVE_ENV immediate $IMAGE_TAG
-      - ./scripts/integration-test.sh
-      - |
-        if [ $? -eq 0 ]; then
-          echo "Integration tests passed, proceeding with deployment"
-        else
-          echo "Integration tests failed"
-          exit 1
-        fi
+      
 
 
 
