@@ -43,7 +43,10 @@ update_ingress() {
         "annotations": {
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
             "alb.ingress.kubernetes.io/group.order": "${blue_order}",
-            "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
+            "alb.ingress.kubernetes.io/weighted-target-groups": 
+            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000,
+             \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", 
+             \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
 }
@@ -57,7 +60,10 @@ EOF
         "annotations": {
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
             "alb.ingress.kubernetes.io/group.order": "${green_order}",
-            "alb.ingress.kubernetes.io/weighted-target-groups": "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \"servicePort\": 3000, \"weight\": ${green_weight}}]"
+            "alb.ingress.kubernetes.io/weighted-target-groups": 
+            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, 
+            \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", 
+            \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
 }
@@ -103,6 +109,7 @@ main() {
     log "Missing arguments. Usage: ./script.sh <blue|green> <immediate|rollback>."
     exit 1
   fi
+  
 
   # if true then
   kubectl set image deployment/"${MEDI_TRACK_DEPLOYMENT_NAME}"-green \
@@ -110,37 +117,37 @@ main() {
     -n "${NAMESPACE}"
   kubectl apply -f k8s/green/medi-track-gateway-green-deployment.yaml -n "${NAMESPACE}"
 
-  # kubectl set image deployment/"${PATIENT_RECORD_DEPLOYMENT_NAME}"-green \
-  #   "${PATIENT_RECORD_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${PATIENT_RECORD_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/patient-record-green-deployment.yaml.yaml -n "${NAMESPACE}"
+  kubectl set image deployment/"${PATIENT_RECORD_DEPLOYMENT_NAME}"-green \
+    "${PATIENT_RECORD_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${PATIENT_RECORD_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/patient-record-green-deployment.yaml.yaml -n "${NAMESPACE}"
 
-  # kubectl set image deployment/"${APPOINTMENTS_DEPLOYMENT_NAME}"-green \
-  #   "${APPOINTMENTS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${APPOINTMENTS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/appointment-scheduling-green-deployment.yaml -n "${NAMESPACE}"
+  kubectl set image deployment/"${APPOINTMENTS_DEPLOYMENT_NAME}"-green \
+    "${APPOINTMENTS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${APPOINTMENTS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/appointment-scheduling-green-deployment.yaml -n "${NAMESPACE}"
 
-  # kubectl set image deployment/"${NOTIFICATION_DEPLOYMENT_NAME}"-green \
-  #   "${NOTIFICATION_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${NOTIFICATION_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/notification-service-green-deployment.yaml -n "${NAMESPACE}"
-  # kubectl set image deployment/"${FILE_HANDLER_DEPLOYMENT_NAME}"-green \
-  #   "${FILE_HANDLER_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${FILE_HANDLER_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/file-handler-green-deployment.yaml -n "${NAMESPACE}"
+  kubectl set image deployment/"${NOTIFICATION_DEPLOYMENT_NAME}"-green \
+    "${NOTIFICATION_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${NOTIFICATION_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/notification-service-green-deployment.yaml -n "${NAMESPACE}"
+  kubectl set image deployment/"${FILE_HANDLER_DEPLOYMENT_NAME}"-green \
+    "${FILE_HANDLER_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${FILE_HANDLER_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/file-handler-green-deployment.yaml -n "${NAMESPACE}"
 
-  # kubectl set image cronjob/"${CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME}"-green \
-  #   "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/appointment-records-cron-green.yaml -n "${NAMESPACE}"
-  # kubectl set image cronjob/"${CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME}"-green \
-  #   "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/appointments-per-doctor-cron-green.yaml -n "${NAMESPACE}"
-  # kubectl set image cronjob/"${CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME}"-green \
-  #   "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
-  #   -n "${NAMESPACE}"
-  # kubectl apply -f k8s/green/disease-summary-cron-green.yaml -n "${NAMESPACE}"
+  kubectl set image cronjob/"${CRON_JOBS_APPOINTMENT_RECORD_DEPLOYMENT_NAME}"-green \
+    "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/appointment-records-cron-green.yaml -n "${NAMESPACE}"
+  kubectl set image cronjob/"${CRON_JOBS_DOCTOR_RECORD_DEPLOYMENT_NAME}"-green \
+    "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/appointments-per-doctor-cron-green.yaml -n "${NAMESPACE}"
+  kubectl set image cronjob/"${CRON_JOBS_DISEASE_SUMMARY_DEPLOYMENT_NAME}"-green \
+    "${CRON_JOBS_ECR_REPOSITORY}"="${AWS_ACCOUNT_ID}".dkr.ecr.us-east-1.amazonaws.com/"${CRON_JOBS_ECR_REPOSITORY}":"${IMAGE_TAG}" \
+    -n "${NAMESPACE}"
+  kubectl apply -f k8s/green/disease-summary-cron-green.yaml -n "${NAMESPACE}"
 
   # fi
 

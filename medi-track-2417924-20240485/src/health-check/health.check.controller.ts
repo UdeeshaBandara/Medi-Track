@@ -21,7 +21,7 @@ export class HealthCheckController {
     
     const patientHost = this.configService.get<string>('PATIENT_RECORD_HOST');
  
-    return { message: 'Health check endpoint', config: patientHost };
+    return { message: 'Endpoint for health check', config: patientHost };
   }
 
 
