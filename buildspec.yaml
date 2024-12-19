@@ -50,11 +50,7 @@ phases:
       - echo "Authenticating kubectl with EKS cluster..."
       - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION  --name $CLUSTER_NAME
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-      - chmod +x scripts/run-tests.sh
-      # - chmod +x scripts/integration-test.sh
-
-
-      # - echo "target env : $TARGET_ENV " 
+      - chmod +x scripts/load-manager.sh
 
   build:
     commands:
@@ -109,8 +105,8 @@ phases:
       # - kubectl apply -f k8s/blue/disease-summary-cron-blue.yaml -n $NAMESPACE-blue
 
       -  docker run -e TEST_USER_NAME=$TEST_USER_NAME -e TEST_USER_PASSWORD=$TEST_USER_PASSWORD  -e  DB_HOST=$DB_HOST -e DB_NAME=$DB_NAME -e DB_PASSWORD=$DB_PASSWORD -e DB_PORT=$DB_PORT -e DB_USER=$DB_USER  -e PATIENT_RECORD_HOST=patient-record-blue --rm $MEDI_TRACK_ECR_REPOSITORY:$IMAGE_TAG npm run test:e2e
+     
       # - ./scripts/run-tests.sh green immediate $IMAGE_TAG
-      # - ./scripts/run-tests.sh $ACTIVE_ENV immediate $IMAGE_TAG
       
 
 

@@ -61,35 +61,3 @@ spec:
                       name: notification-host
                       key: NOTIFICATION_HOST
           restartPolicy: OnFailure
-
-#           volumes:
-#           - name: test-volume
-#             configMap:
-#               name: test-files
-# ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: test-files
-# data:
-#   package.json: |
-#     {
-#       "name": "test-runner",
-#       "scripts": {
-#         "test": "jest"
-#       },
-#       "dependencies": {
-#         "jest": "^29.0.0",
-#         "@nestjs/testing": "^10.0.0"
-#       }
-#     }
-#   jest.config.js: |
-#     module.exports = {
-#       moduleFileExtensions: ['js', 'json', 'ts'],
-#       rootDir: '.',
-#       testEnvironment: 'node',
-#       testRegex: '.test.ts$',
-#       transform: {
-#         '^.+\\.(t|j)s$': 'ts-jest'
-#       }
-#     }
