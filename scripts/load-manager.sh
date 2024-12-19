@@ -44,8 +44,8 @@ update_ingress() {
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
             "alb.ingress.kubernetes.io/group.order": "${blue_order}",
             "alb.ingress.kubernetes.io/weighted-target-groups": 
-            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000,
-             \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", 
+            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \
+             \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \
              \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
@@ -61,8 +61,8 @@ EOF
             "alb.ingress.kubernetes.io/group.name": "${INGRESS_GROUP_NAME}",
             "alb.ingress.kubernetes.io/group.order": "${green_order}",
             "alb.ingress.kubernetes.io/weighted-target-groups": 
-            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, 
-            \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", 
+            "[{\"serviceName\": \"medi-track-gateway-blue\", \"servicePort\": 3000, \
+            \"weight\": ${blue_weight}},{\"serviceName\": \"medi-track-gateway-green\", \
             \"servicePort\": 3000, \"weight\": ${green_weight}}]"
         }
     }
