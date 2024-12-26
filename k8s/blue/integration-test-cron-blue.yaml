@@ -60,4 +60,14 @@ spec:
                     secretKeyRef:
                       name: notification-host
                       key: NOTIFICATION_HOST
+                - name: TEST_USER_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: test-user-name
+                      key: TEST_USER_NAME
+                - name: TEST_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: test-user-password
+                      key: TEST_USER_PASSWORD
           restartPolicy: OnFailure
