@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,10 @@ export class AuthService {
  
 
   async validateUser(username: string, pass: string): Promise<any> {
+    Logger.log(`username ${username}`, 'username');
+    Logger.log(`password ${pass}`, 'password');
     const user = await this.userRepository.findOneBy({ name: username });
+    Logger.log(`user ${user}`, 'user');
     if (user && (await bcrypt.compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;
