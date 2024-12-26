@@ -1,9 +1,6 @@
 export class CreateAppointmentRequest {
-    name: string;
-    address: string;
-    email: string;
-    gender: string;
-    date_of_birth: Date;
-    contact_number: number;
-    emergency_contact: number;
-  }
+  reason_for_visit: string
+  patient_id: string
+  doctor_id: string
+  appointment_date: string
+}

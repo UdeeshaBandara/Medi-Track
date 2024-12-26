@@ -13,11 +13,11 @@ export class AppointmentService {
     // @Inject('NOTIFICATIONS') private readonly notificationClient: ClientProxy,
   ) { }
 
-  async createAppointment(createUserRequest: CreateAppointmentRequest) {
+  async createAppointment(createAppointmentRequest: CreateAppointmentRequest) {
 
     return await this.appointmentClient.send(
       'appointment_created',
-      createUserRequest
+      createAppointmentRequest
     );
 
   }

@@ -9,13 +9,11 @@ export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) { }
 
   @MessagePattern('appointment_created')
-  // @Post()
-  create(@Body() createPatientDto: CreateAppointmentDto) {
-    return this.appointmentService.create({ ...createPatientDto, appointment_date: moment(new Date()).format('YYYY-MM-DD') });
+  create(@Body() createAppointmentDto: CreateAppointmentDto) {
+    return this.appointmentService.create({ ...createAppointmentDto, appointment_date: moment(createAppointmentDto.appointment_date).format('YYYY-MM-DD') });
   }
 
   @MessagePattern('appointment_find_all')
-  // @Get()
   findAll() {
     return this.appointmentService.findAll();
   }
